@@ -2,28 +2,26 @@ export const projects = [
   {
     id: "claude-ue5",
     title: "Agent IA × UE5",
-    subtitle: "Plugin C++ embarqué dans Unreal Engine 5 — Projet personnel",
+    subtitle: "Pont MCP + plugin C++ pour piloter Unreal Engine 5 par IA — Projet personnel",
     engine: "UE5", category: "UE5",
-    tags: ["UE5", "C++", "IA", "Groq", "Python", "Slate UI", "LLM"],
+    tags: ["UE5", "C++", "IA", "MCP", "Python", "Tests", "CI/CD"],
     year: "2025–2026",
     color: "#00d4ff",
     role: "Développeur solo",
     type: "Outil / IA",
     images: ["/images/claude-ue5/cover_overview.png"],
-    description: "Agent IA intégré nativement dans l'éditeur Unreal Engine 5 sous forme de panneau dockable custom. L'agent pilote l'éditeur en langage naturel : level design procédural, création de Blueprints, spawn d'actors, atmosphères — le tout exécuté en Python sans quitter UE5.",
-    tech: ["Unreal Engine 5.7", "C++", "Slate UI", "Python", "Groq API", "Llama 3.3 70B", "Blueprint", "MCP", "Claude AI"],
+    description: "Toolchain qui permet à un agent IA conversationnel (Claude, via MCP) de piloter l'éditeur Unreal Engine 5 de façon fiable : génération procédurale de niveaux, édition de Blueprints par script, spawn d'acteurs — avec vérification automatique (tests, screenshot, playtest) avant que le moindre résultat ne soit sauvegardé.",
+    tech: ["Unreal Engine 5.7", "C++", "Slate UI", "Python", "MCP", "Claude AI", "Blueprint", "GitHub Actions", "pytest"],
     highlights: [
-      "Plugin C++ RoomGenerator avec panneau Slate dockable (Tools → Claude AI) intégré dans l'éditeur UE5",
-      "ClaudeEditorSubsystem : gestion de l'historique de conversation, appels HTTP async vers Groq (Llama 3.3 70B), tool_use OpenAI format",
-      "Exécution Python temps réel dans UE5 via commande console — spawn actors, lumières, Blueprints depuis le chat",
-      "Toolchain horror_presets.py : templates de salles (abandoned, office, danger, boss, corridor), atmosphères, props procéduraux",
-      "BlueprintEditingSubsystem C++ : édition de graphes Blueprint en 1 appel (BatchWireGraph DSL)",
-      "VignetteManager C++ : vignette rouge runtime synchronisée avec l'état des Blackboards IA",
+      "Pont MCP (Remote Execution API) qui permet à un agent externe (Claude Code / Claude Cowork) de piloter l'éditeur UE5 en langage naturel — génération de niveaux, création de mécaniques de gameplay, vérification automatique du travail produit",
+      "Panneau Slate C++ dockable (Tools → Claude AI) intégré nativement dans l'éditeur, pour un usage local sans dépendre d'un outil externe",
+      "Suite de 90 tests automatiques (81 in-editor + 9 en CI GitHub Actions) qui valide chaque modification du plugin avant qu'elle soit acceptée — aucune régression silencieuse",
+      "Agent de playtest autonome : pilote le personnage en jeu (PIE) et journalise les événements (détection ennemie, blocages, jumpscares) — a détecté et permis de corriger un vrai bug empêchant les ennemis de poursuivre le joueur",
+      "BatchWireGraph : DSL JSON qui câble un graphe Blueprint entier (nœuds + connexions) en un seul appel, au lieu de 20+ appels d'API unitaires",
+      "Placement zéro-overlap (safe_spawn_enemy) : grille d'occupation + raycast de sol + vérification physique réelle — un acteur qui atterrirait dans un mur est repositionné automatiquement, jamais validé tel quel",
       "verify_level.py : vérification automatique complète du level (acteurs dans les murs, NavMesh non builté, items manquants, lumières non configurées)",
-      "OccupancyGrid + safe_place : système de placement zéro-overlap — grille d'occupation + sphere_overlap_actors physique + floor snap, garantit qu'aucun ennemi n'est spawné dans la géométrie",
-      "test_suite.py : 26 tests anti-régression couvrant bpes, BatchWireGraph, BGH, ue5_utils (~5s d'exécution)",
-      "Clé API persistante via variable d'environnement GROQ_API_KEY — gratuit, sans abonnement",
-      "100% open-source, construit from scratch en C++ Slate sur plugin existant",
+      "Vérification visuelle non-régressive (SSIM approximé par blocs) : chaque zone validée devient une image de référence, toute reconstruction future est comparée pour détecter une dérive silencieuse",
+      "100% open-source, CI GitHub Actions à chaque commit — 19 comportements non documentés de l'API UE5.7 identifiés et contournés",
     ],
     gallery: [
       { src: "/images/claude-ue5/panel_overview.png", captionKey: "gallery_claude_panel" },
@@ -33,18 +31,23 @@ export const projects = [
     ],
     sections: [
       {
-        title: "Panneau Slate embarqué dans UE5",
-        text: "Un plugin C++ ajoute un panneau dockable natif dans l'éditeur UE5 (Tools → Claude AI). Interface Slate custom : zone de chat scrollable, champ de saisie, affichage du code Python généré et de ses résultats. L'agent tourne via Groq (Llama 3.3 70B, gratuit) avec persistance de la clé API et historique de conversation multi-tours.",
+        title: "Deux façons de piloter l'éditeur",
+        text: "Un pont MCP (Remote Execution API) permet à un agent externe comme Claude Code ou Claude Cowork de piloter l'éditeur UE5 depuis une simple conversation. En complément, un panneau Slate C++ dockable (Tools → Claude AI) offre le même type d'exécution Python directement dans l'éditeur, sans dépendance externe.",
         images: ["/images/claude-ue5/panel_overview.png"]
       },
       {
-        title: "Toolchain level design procédural",
-        text: "horror_presets.py fournit des templates de salles intelligents (abandoned, office, danger, boss, corridor) qui placent props, lumières d'ambiance et atmosphères de façon procédurale. Une commande en langage naturel comme \"habille la Zone 1 comme une salle abandonnée\" génère et exécute automatiquement le Python correspondant.",
+        title: "Vérification avant chaque sauvegarde",
+        text: "Aucun résultat n'est accepté à l'aveugle : verify_level.py scanne automatiquement les acteurs en collision, les lumières mal configurées, le NavMesh non reconstruit ; une capture d'écran synchrone (contournement d'un bug de rendu UE5) permet une relecture visuelle systématique avant tout save().",
         images: ["/images/claude-ue5/level_design_result.png", "/images/claude-ue5/python_execution.png"]
       },
       {
-        title: "BlueprintEditingSubsystem & VignetteManager",
-        text: "BlueprintEditingSubsystem expose une API C++ permettant de câbler des graphes Blueprint entiers en un seul appel (BatchWireGraph DSL). VignetteManager lit les Blackboards des ennemis en temps réel et applique une vignette rouge à l'écran selon l'état de la poursuite — système runtime sans Blueprint.",
+        title: "Agent de playtest autonome",
+        text: "Un module dédié pilote le personnage joueur en PIE via des waypoints et un pathfinding NavMesh réel, journalise les événements de gameplay (détection, poursuite, jumpscare) et permet de rejouer un scénario de façon reproductible — c'est cet agent qui a mis en évidence un vrai bug de comportement ennemi, invisible en test statique.",
+        images: []
+      },
+      {
+        title: "BlueprintEditingSubsystem & suite anti-régression",
+        text: "BlueprintEditingSubsystem expose une API C++ permettant de câbler des graphes Blueprint entiers en un seul appel (BatchWireGraph DSL). Avant et après toute modification du plugin, une suite de 90 tests revalide chaque subsystem — une régression est bloquée avant d'atteindre le niveau.",
         images: ["/images/claude-ue5/blueprint_editing.png"]
       },
     ],
@@ -80,13 +83,13 @@ export const projects = [
     role: "Développeur solo",
     type: "Gameplay / Physique",
     images: [],
-    description: "Système de personnage C++ en Unreal Engine 5.8 combinant un mode marche standard et un mode hover avec banking, alignement de surface et accélération sur pente. Inclut un terrain désertique procédural et un calibrage physique basé sur du reverse-engineering de données réelles (Sable, Unity).",
-    tech: ["Unreal Engine 5.8", "C++", "ProceduralMeshComponent", "Enhanced Input", "Physics", "Reverse Engineering"],
+    description: "Système de personnage C++ en Unreal Engine 5.8 combinant un mode marche standard et un mode hover avec banking, alignement de surface et accélération sur pente. Inclut un terrain désertique procédural généré en C++ et un calibrage physique itératif par comparaison avec des jeux hover de référence pour obtenir un ressenti crédible.",
+    tech: ["Unreal Engine 5.8", "C++", "ProceduralMeshComponent", "Enhanced Input", "Physics"],
     highlights: [
-      "HoverCharacter C++ — dual mode marche/hover avec banking dynamique, alignement de surface et slope acceleration",
-      "Terrain procédural désert (ADesertTerrain) via ProceduralMeshComponent — 5 octaves de bruit, LOD dynamique",
-      "Input AZERTY via IsInputKeyDown() — contournement documenté d'un bug UE5.7/5.8 (Enhanced Input modifiers non persistants entre sessions)",
-      "Calibrage physics sur données réelles extraites de Sable (Unity AssetBundle reverse-engineering)",
+      "HoverCharacter C++ — dual mode marche/hover avec banking dynamique, alignement de surface par trace et accélération sur pente calculée depuis la normale du sol",
+      "Terrain procédural désert (ADesertTerrain) via ProceduralMeshComponent — 5 octaves de bruit de Perlin, LOD dynamique",
+      "Calibrage physique itératif par comparaison avec des références de vol externes (jeux à mécanique hover similaire), pour obtenir une sensation crédible plutôt que des valeurs choisies au hasard",
+      "Contournement documenté d'un bug UE5.7/5.8 (modifiers Enhanced Input non persistants entre sessions) via IsInputKeyDown() avec mapping AZERTY explicite — la même solution retrouvée et réappliquée sur un second projet (RPG 3e personne)",
     ],
     gallery: [],
     sections: [
@@ -96,13 +99,54 @@ export const projects = [
         images: []
       },
       {
-        title: "Terrain procédural & calibrage réel",
-        text: "ADesertTerrain génère un terrain désertique en C++ via ProceduralMeshComponent avec 5 octaves de bruit de Perlin. La physique hover a été calibrée sur des données extraites par reverse-engineering des AssetBundles Unity du jeu Sable, pour reproduire une sensation de vol cohérente avec les attentes joueur.",
+        title: "Terrain procédural & calibrage physique",
+        text: "ADesertTerrain génère un terrain désertique en C++ via ProceduralMeshComponent avec 5 octaves de bruit de Perlin. La physique du mode hover a été calibrée de façon itérative, par comparaison avec des jeux de référence proposant une mécanique de vol similaire, pour obtenir un ressenti cohérent avec les attentes du joueur.",
         images: []
       },
       {
         title: "Contournement bug Enhanced Input UE5.8",
-        text: "Bug documenté : les modifiers Enhanced Input (deadzone, swizzle, etc.) ne persistent pas entre sessions PIE en UE5.7/5.8. Solution implémentée : remplacement par IsInputKeyDown() sur les axes critiques, avec mapping AZERTY explicite. Solution reproductible et documentée.",
+        text: "Bug documenté : les modifiers Enhanced Input (deadzone, swizzle, etc.) ne persistent pas entre sessions PIE en UE5.7/5.8. Solution implémentée : remplacement par IsInputKeyDown() sur les axes critiques, avec mapping AZERTY explicite. Solution reproductible, documentée, et déjà réutilisée sur un projet suivant.",
+        images: []
+      },
+    ],
+  },
+  {
+    id: "rpg-ue5",
+    title: "RPG 3e Personne",
+    subtitle: "Projet personnel — combat, IA ennemie, puzzle (UE5.8)",
+    engine: "UE5", category: "UE5",
+    tags: ["UE5", "C++", "RPG", "Combat", "AI", "Puzzle"],
+    year: "2026",
+    color: "#2ecc71",
+    role: "Développeur solo",
+    type: "RPG / Combat",
+    images: [],
+    description: "RPG à la 3e personne façon Witcher sur UE5.8. Système de combat à deux mains (épée/bouclier) avec règles d'input distinctes par touche, IA ennemie en C++ pilotée par une vraie machine à états, puzzle générique interrupteurs→porte, objectifs multiples et inventaire d'objets ramassables.",
+    tech: ["Unreal Engine 5.8", "C++", "Blueprint", "Python (Editor scripting)", "Finite State Machine"],
+    highlights: [
+      "Système de combat à deux mains indépendantes (épée en main gauche, bouclier en main droite) avec des règles distinctes par type d'input — tap déclenche une action, hold en déclenche une autre, sans dépendre du système Repeat d'Enhanced Input",
+      "IA ennemie en C++ (ARPGEnemy) pilotée par une vraie machine à états (Idle → Patrol → Chase → Attack → Dead), paramètres de détection/poursuite/attaque exposés en UPROPERTY et réutilisés par héritage sur plusieurs archétypes d'ennemis",
+      "Système de puzzle générique interrupteurs → porte, construit une seule fois puis instancié par script pour n'importe quelle séquence, plutôt que codé en dur pour un cas unique",
+      "Réutilisation directe d'un bug déjà résolu sur un projet précédent (modifiers Enhanced Input non persistants) — même solution appliquée immédiatement, sans le redécouvrir",
+      "Diagnostic d'un bug de sauvegarde de niveau : les modifications de position/tags d'acteurs étaient perdues au redémarrage malgré un save() « réussi », à cause du mode One File Per Actor du niveau — cause racine isolée par comparaison de fichiers, corrigée à la source",
+      "Discipline de calibration : une valeur de tuning trouvée en modifiant un composant en direct (position d'une épée tenue en main) est systématiquement reportée dans le code source C++, plutôt que laissée comme un correctif runtime qui ne survit pas à une recompilation",
+      "Système d'interaction (touche E) validé uniquement une fois testé par une vraie pression de touche en jeu — un premier test par appel direct sur la cible avait masqué un bug réel de détection de collision",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Combat & IA ennemie",
+        text: "Le personnage gère deux mains indépendantes : épée à gauche, bouclier à droite, chacune avec ses propres règles de tap/hold. Les ennemis (ARPGEnemy, C++) suivent une machine à états complète — détection, poursuite, attaque au contact, retour en patrouille — dont les paramètres sont réglables par instance et réutilisés par héritage pour créer de nouveaux archétypes sans dupliquer la logique.",
+        images: []
+      },
+      {
+        title: "Puzzle générique & objectifs",
+        text: "Le système de puzzle interrupteurs→porte est générique : une fonction construit la séquence complète (portes, interrupteurs, câblage) pour n'importe quel nombre d'interrupteurs, réutilisable sur d'autres niveaux. Un système d'objectifs multiples affiche la progression (ennemis restants, statut du puzzle) via un widget dédié.",
+        images: []
+      },
+      {
+        title: "Ce qui devrait intéresser un recruteur technique",
+        text: "Au-delà des mécaniques de jeu, ce projet documente une vraie discipline de débogage : un bug de sauvegarde de niveau où save() retournait un succès sans jamais réécrire certains fichiers d'acteurs sur disque, isolé par comparaison de fichiers avant/après ; une calibration de position d'objet tenu en main reportée du runtime vers le code source C++ pour ne plus dépendre d'un correctif fragile ; un système d'interaction déclaré fonctionnel seulement après un test par vraie pression de touche, après avoir découvert qu'un appel direct sur la cible masquait un bug réel. Ce sont exactement le genre de bugs qui n'apparaissent qu'en conditions réelles, pas en test isolé — et la méthode pour les débusquer est appliquée de façon systématique tout au long du projet.",
         images: []
       },
     ],
@@ -322,7 +366,7 @@ export const experience = [
     role: "Technicien Systèmes Embarqués",
     company: "CS Group",
     type: "CDI",
-    period: "Sept. 2023 — Nov. 2025",
+    period: "Sept. 2024 — Nov. 2025",
     domain: "Simulation / Défense",
     color: "#7b61ff",
     desc: "Développement sur simulateur aéronautique pour la défense nationale. Environnement sécurisé, documentation classifiée, architecture modulaire.",
