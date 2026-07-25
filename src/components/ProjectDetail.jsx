@@ -63,6 +63,8 @@ export default function ProjectDetail() {
         .detail-badge-year {
           border: 1px solid var(--border); color: var(--text3);
         }
+        .detail-badge-completed { background: rgba(46,204,113,0.92); color: #0a2e1a; font-weight: 700; }
+        .detail-badge-ongoing { background: rgba(255,176,32,0.92); color: #2a1800; font-weight: 700; }
         .detail-title {
           font-size: clamp(2.5rem, 6vw, 5rem);
           font-weight: 800; letter-spacing: -.03em; line-height: .95;
@@ -263,6 +265,9 @@ export default function ProjectDetail() {
             <span className="detail-badge detail-badge-engine">{project.engine}</span>
             {pTr?.type && <span className="detail-badge detail-badge-type">{pTr.type}</span>}
             <span className="detail-badge detail-badge-year">{project.year}</span>
+            <span className={`detail-badge detail-badge-${project.status}`}>
+              {project.status === "completed" ? t("status_completed") : t("status_ongoing")}
+            </span>
           </div>
           <h1 className="detail-title">{pTr?.title ?? project.title}</h1>
           <div className="detail-subtitle">{pTr?.subtitle ?? project.subtitle}</div>

@@ -27,7 +27,7 @@ export const projectsData = {
       ],
     },
     "horror-ue5": {
-      title: "Projet Horreur", subtitle: "Jeu personnel — en cours", type: "Horreur", role: "Développeur solo",
+      title: "Projet Horreur", subtitle: "Jeu personnel", type: "Horreur", role: "Développeur solo",
       description: "Jeu d'horreur solo sur UE5. Le joueur est poursuivi par des mannequins animés qui s'activent dans l'obscurité. Système de détection par la lumière, IA comportementale, gestion de la tension sonore.",
       highlights: ["IA ennemie basée sur Behavior Trees et AI Perception (vision/son)", "Système Lumen — les ennemis réagissent à l'obscurité", "Gestion de l'état de peur : ambiance sonore procédurale, post-process", "Level design orienté tension et couloirs étroits"],
       sections: [],
@@ -148,7 +148,7 @@ export const projectsData = {
       ],
     },
     "horror-ue5": {
-      title: "Horror Project", subtitle: "Personal project — in progress", type: "Horror", role: "Solo developer",
+      title: "Horror Project", subtitle: "Personal project", type: "Horror", role: "Solo developer",
       description: "Solo horror game on UE5. The player is chased by animated mannequins that activate in the dark. Light-detection system, behavioural AI, tension management.",
       highlights: ["AI enemies driven by Behavior Trees and AI Perception (sight/sound)", "Lumen dynamic lighting — enemies react to darkness", "Fear state management: procedural sound, post-process", "Tension-oriented level design"],
       sections: [],
@@ -322,6 +322,8 @@ const translations = {
     proj_see: "↗ Voir le projet",
     proj_featured: "⚡ Projet phare 2026",
     proj_placeholder: "Images à venir",
+    status_completed: "✓ Terminé",
+    status_ongoing: "◐ En cours",
 
     skills_label: "Compétences",
     skills_title: "Stack &\nsavoir-faire",
@@ -437,6 +439,8 @@ const translations = {
     proj_see: "↗ View project",
     proj_featured: "⚡ Featured 2026",
     proj_placeholder: "Images coming soon",
+    status_completed: "✓ Completed",
+    status_ongoing: "◐ Ongoing",
 
     skills_label: "Skills",
     skills_title: "Stack &\nexpertise",

@@ -104,6 +104,13 @@ export default function Projects() {
           background: rgba(0,0,0,0.7); padding: .2rem .55rem;
           backdrop-filter: blur(4px);
         }
+        .project-status-badge {
+          font-family: var(--font-mono); font-size: .6rem;
+          letter-spacing: .08em; padding: .2rem .55rem;
+          backdrop-filter: blur(4px); font-weight: 700;
+        }
+        .project-status-completed { color: #0a2e1a; background: rgba(46,204,113,0.92); }
+        .project-status-ongoing { color: #2a1800; background: rgba(255,176,32,0.92); }
 
         /* Card body */
         .project-body { padding: 1.5rem; }
@@ -223,6 +230,9 @@ export default function Projects() {
                     <span className="project-engine-badge" style={{ background: "#7b61ff" }}>Claude AI</span>
                   )}
                   <span className="project-year-badge">{p.year}</span>
+                  <span className={`project-status-badge project-status-${p.status}`}>
+                    {p.status === "completed" ? t("status_completed") : t("status_ongoing")}
+                  </span>
                 </div>
               </div>
 
