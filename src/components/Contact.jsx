@@ -6,6 +6,7 @@ export default function Contact() {
   const links = [
     { label: t("contact_email_label"), value: "thomas.labetouille@gmail.com", href: "mailto:thomas.labetouille@gmail.com", icon: "✉", color: "#00d4ff" },
     { label: "LinkedIn", value: "thomas-labetouille", href: "https://www.linkedin.com/in/thomas-labetouille-294b39212/", icon: "in", color: "#7b61ff" },
+    { label: t("contact_github_label"), value: t("contact_github_value"), href: "https://github.com/ThomasLabetouille", icon: "gh", color: "#8b949e" },
     { label: t("contact_cv_label"), value: t("contact_cv_value"), href: t("contact_cv_file"), icon: "↓", color: "#ff4d00", download: true },
   ];
 
