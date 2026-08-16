@@ -17,7 +17,7 @@ const SLIDES = [
     id: "leveldesigntools",
     title: "Outils de Level Design",
     subtitle: "RPG_Test — Panneau no-code C++/Slate",
-    src: "/videos/leveldesigntools_hero.mp4",
+    src: "/videos/LevelDesignTools_Demo.mp4",
   },
 ];
 
