@@ -3,14 +3,15 @@ import { Link } from "react-router-dom";
 import { projects } from "../data/portfolio";
 import { useLang } from "../context/LangContext";
 
-const FILTER_KEYS = ["Tous", "UE5", "Unity", "Simulation"];
+const FILTER_KEYS = ["Tous", "UE5", "Unity", "Logiciel", "Simulation"];
 
 export default function Projects() {
   const [active, setActive] = useState("Tous");
   const [expanded, setExpanded] = useState(null);
   const { t, tProject } = useLang();
 
-  const filters = FILTER_KEYS.map(k => k === "Tous" ? { key: k, label: t("proj_filter_all") } : { key: k, label: k });
+  const FILTER_LABEL_KEYS = { "Tous": "proj_filter_all", "Logiciel": "proj_filter_software" };
+  const filters = FILTER_KEYS.map(k => FILTER_LABEL_KEYS[k] ? { key: k, label: t(FILTER_LABEL_KEYS[k]) } : { key: k, label: k });
 
   const filtered = active === "Tous"
     ? projects

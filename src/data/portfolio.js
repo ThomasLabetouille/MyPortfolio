@@ -1,5 +1,49 @@
 export const projects = [
   {
+    id: "comptoir",
+    title: "Comptoir",
+    subtitle: "Assistant de recherche de séjours à modèle de langage encadré — Projet personnel",
+    engine: "Python", category: "Logiciel",
+    tags: ["Python", "IA", "LLM local", "SQL", "Java", "Tests"],
+    year: "2026",
+    color: "#00c9a7",
+    role: "Développeur solo",
+    type: "Logiciel / IA appliquée",
+    status: "ongoing",
+    images: [],
+    description: "Un client de voyages formule sa demande comme il la dirait au téléphone ; Comptoir rend les séjours qui correspondent vraiment, avec leur prix réel pour cette composition familiale — et quand rien ne correspond, il nomme le critère à assouplir plutôt que de proposer quelque chose d'approchant. Le modèle de langage comprend la demande et rédige la réponse ; il ne décide de rien. Tout ce qui est vérifiable est tranché en Python.",
+    tech: ["Python 3.10+", "Ollama (LLM local)", "SQLite", "FastAPI", "Spring Boot (JDK 17)", "pytest", "GitHub Actions"],
+    highlights: [
+      "Séparation stricte entre ce que fait le modèle (comprendre la phrase, rédiger la réponse) et ce que fait le code : prix, dates, capacité des chambres, formule de restauration, aéroport de départ sont tranchés en Python, avec des comparaisons — aucun modèle n'est appelé pour savoir si 3 293 € tient dans un budget de 3 000 €",
+      "Chaque phrase de la réponse est rattachée par le modèle à un champ d'une fiche précise, puis re-vérifiée contre cette fiche avant affichage : une fiche jamais présentée au modèle, un champ inexistant ou un prix qui ne correspond pas au montant réellement calculé sont retirés et journalisés, jamais montrés au client",
+      "Quand rien ne correspond, le modèle n'est pas appelé du tout — c'est le moteur qui nomme le critère à assouplir, dans l'ordre où un agent négocie réellement : le budget d'abord, les dates ensuite, la destination en dernier",
+      "Le même filtrage reporté en SQLite (requête paramétrée avec EXISTS sur des tables normalisées) et confronté fiche par fiche et prix par prix à l'implémentation Python sur les 20 mêmes requêtes — le portage n'est pas supposé correct parce qu'il ressemble à l'original, il est vérifié contre lui",
+      "167 tests, dont les contrôles de contraintes dures ré-implémentés à la main plutôt qu'en appelant les fonctions du moteur : un test qui vérifie le code avec le code testé se contente de confirmer que la fonction est d'accord avec elle-même",
+      "Mesure en conditions réelles avec le modèle dans la boucle sur 20 demandes : extraction 20/20, abstention correcte 8/8 sur les cas insolubles, traçabilité moyenne 0,86 — et les motifs de rejet enregistrés, ce qui permet de distinguer un modèle qui invente d'un modèle qui bafouille",
+      "Reprise de contexte : « même chose mais pas plus de 3 000 euros » ne repart pas de zéro. Le modèle ne voit toujours que la dernière phrase ; c'est le code qui reprend champ par champ ce qu'elle ne mentionne pas. L'abstention est passée de 6/8 à 8/8 après ce correctif",
+      "Le noyau ne dépend que de la bibliothèque standard Python. L'interface web (FastAPI) vit dans un fichier de dépendances séparé pour ne pas casser cette règle, et une façade Spring Boot (JDK 17) expose le service en HTTP avec validation des requêtes",
+      "Trois défauts trouvés uniquement en mesurant ou en utilisant, pas en relisant : réponses tronquées par la fenêtre de contexte, boucles de répétition du modèle sur les listes, et une reprise de critères automatique qui faisait cumuler deux demandes sans rapport dès le deuxième essai",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Le modèle comprend, le code décide",
+        text: "Dans le tourisme, une hallucination n'est pas une curiosité : c'est un client qui arrive dans un hôtel sans le club enfants qu'on lui a promis. Le modèle de langage est donc cantonné à deux tâches — traduire une phrase libre en demande structurée, et rédiger la réponse finale. Tout ce qui se vérifie est tranché en Python, par des comparaisons. La sortie du modèle elle-même n'est pas crue sur parole : un JSON peut arriver entouré de balises markdown, tronqué, ou porter une formule qui n'existe pas dans le catalogue — ce qui est invalide est écarté, jamais deviné, et signalé comme non précisé.",
+        images: []
+      },
+      {
+        title: "Vérifié affirmation par affirmation",
+        text: "La rédaction ne se fait pas en texte libre : le modèle ne voit que les fiches déjà retenues par le filtrage, et doit rendre un JSON où chaque phrase cite explicitement un champ d'une fiche précise. Un vérificateur re-cherche ensuite chaque affirmation dans la fiche citée et retire tout ce qui ne correspond pas. Sur un passage de mesure, 12 affirmations sur 63 ont été écartées — aucune pour avoir contredit une fiche, toutes pour avoir été annoncées puis laissées vides.",
+        images: []
+      },
+      {
+        title: "Le même moteur, deux fois",
+        text: "Les critères qui se ramènent à une appartenance à un ensemble ont été réécrits en SQLite, dans une seule requête paramétrée. La période et le prix restent en Python — une intersection de plages de dates et une remise enfant n'ont pas leur place dans une clause WHERE sans devenir illisibles. Un test recompose le résultat complet et vérifie qu'il est identique, fiche par fiche et prix par prix, à celui du moteur Python sur les mêmes requêtes.",
+        images: []
+      },
+    ],
+  },
+  {
     id: "claude-ue5",
     title: "Agent IA × UE5",
     subtitle: "Pont MCP + plugin C++ pour piloter Unreal Engine 5 par IA — Projet personnel",
@@ -16,13 +60,13 @@ export const projects = [
     highlights: [
       "Pont MCP (Remote Execution API) qui permet à un agent externe (Claude Code / Claude Cowork) de piloter l'éditeur UE5 en langage naturel — génération de niveaux, création de mécaniques de gameplay, vérification automatique du travail produit",
       "Panneau Slate C++ dockable (Tools → Claude AI) intégré nativement dans l'éditeur, pour un usage local sans dépendre d'un outil externe",
-      "Suite de 90 tests automatiques (81 in-editor + 9 en CI GitHub Actions) qui valide chaque modification du plugin avant qu'elle soit acceptée — aucune régression silencieuse",
+      "Suite de 117 tests automatiques (111 dans l'éditeur + 6 en CI GitHub Actions) qui valide chaque modification du plugin avant qu'elle soit acceptée — aucune régression silencieuse",
       "Agent de playtest autonome : pilote le personnage en jeu (PIE) et journalise les événements (détection ennemie, blocages, jumpscares) — a détecté et permis de corriger un vrai bug empêchant les ennemis de poursuivre le joueur",
       "BatchWireGraph : DSL JSON qui câble un graphe Blueprint entier (nœuds + connexions) en un seul appel, au lieu de 20+ appels d'API unitaires",
       "Placement zéro-overlap (safe_spawn_enemy) : grille d'occupation + raycast de sol + vérification physique réelle — un acteur qui atterrirait dans un mur est repositionné automatiquement, jamais validé tel quel",
       "verify_level.py : vérification automatique complète du level (acteurs dans les murs, NavMesh non builté, items manquants, lumières non configurées)",
       "Vérification visuelle non-régressive (SSIM approximé par blocs) : chaque zone validée devient une image de référence, toute reconstruction future est comparée pour détecter une dérive silencieuse",
-      "100% open-source, CI GitHub Actions à chaque commit — 19 comportements non documentés de l'API UE5.7 identifiés et contournés",
+      "100% open-source, CI GitHub Actions à chaque commit — 25 comportements non documentés de l'API UE5.7 identifiés et contournés",
     ],
     gallery: [
       { src: "/images/claude-ue5/panel_overview.png", captionKey: "gallery_claude_panel" },
@@ -48,10 +92,37 @@ export const projects = [
       },
       {
         title: "BlueprintEditingSubsystem & suite anti-régression",
-        text: "BlueprintEditingSubsystem expose une API C++ permettant de câbler des graphes Blueprint entiers en un seul appel (BatchWireGraph DSL). Avant et après toute modification du plugin, une suite de 90 tests revalide chaque subsystem — une régression est bloquée avant d'atteindre le niveau.",
+        text: "BlueprintEditingSubsystem expose une API C++ permettant de câbler des graphes Blueprint entiers en un seul appel (BatchWireGraph DSL). Avant et après toute modification du plugin, une suite de 117 tests revalide chaque subsystem — une régression est bloquée avant d'atteindre le niveau.",
         images: ["/images/claude-ue5/blueprint_editing.png"]
       },
     ],
+  },
+  {
+    id: "level-design-tools",
+    title: "Room Builder Unity",
+    subtitle: "Outils d'éditeur pour blockout + banc de vérification géométrique — Projet personnel",
+    engine: "Unity", category: "Unity",
+    tags: ["Unity", "C#", "Éditeur", "IA", "MCP", "Tests", "Géométrie"],
+    year: "2026",
+    color: "#ffb400",
+    role: "Développeur solo",
+    type: "Outil / IA",
+    status: "ongoing",
+    images: [],
+    description: "Outils d'éditeur Unity pour blockouter des niveaux : génération de salles, contour dessiné à la souris puis extrudé en direct, découpe d'ouvertures sur la surface visée. Le code de l'outil est écrit en grande partie par un agent Claude piloté en MCP depuis l'éditeur ; le travail porte surtout sur la couche qui vérifie ce qu'il produit — du code qui compile et qui a l'air de marcher n'est pas du code correct.",
+    tech: ["Unity 6000.5", "C#", "URP", "MCP", "Claude AI", ".NET 8", "Tests de propriétés", "Mutation testing"],
+    highlights: [
+      "Room Builder : trois modes d'éditeur — salle paramétrique, contour dessiné dans la vue Scene puis extrudé avec la hauteur au curseur (aimantation Ctrl, sens donné par le geste), et découpe d'ouvertures directement sur la surface survolée",
+      "La découpe ne retire pas de matière : le panneau conserve sa description logique (contour, épaisseur, liste des trous) sur un composant sérialisé et son maillage est régénéré entièrement à chaque fois — un mur reste découpable indéfiniment, chaque ouverture est annulable",
+      "Géométrie sans aucune dépendance à l'API Unity : elle se compile et s'exerce hors de l'éditeur, ce qui permet d'exercer 40 000 panneaux en quelques secondes au lieu d'un aller-retour dans Unity à chaque essai",
+      "14 propriétés vérifiées plutôt que des résultats figés — conservation d'aire, couverture exacte (un point dans la matière couvert par exactement un triangle, un point dans un trou par aucun), étanchéité du prisme, volume égal à aire × épaisseur, indépendance à l'échelle, déterminisme",
+      "Mutation testing maison : 21 défauts plausibles injectés un par un dans le code de géométrie, recompilés, confrontés à la batterie — 19 rattrapés. La mesure est partie de 67 %, chaque palier a été gagné en écrivant la propriété qui manquait",
+      "Quatre bugs réels trouvés dans du code qui compilait et fonctionnait à l'écran : seuil absolu rendant le maillage dépendant de la position du mur dans le niveau, extrapolation posant un sommet à l'intérieur d'un trou voisin (1 cas sur 1500), fissure de 15 µm entre une face et son chant, cylindre accepté comme boîte",
+      "Vérification en couches — compilateur, propriétés hors moteur, sonde dans l'éditeur en direct via MCP, œil humain : chacune attrape une classe de défaut que les autres ne peuvent structurellement pas voir. Le cylindre n'a pu être trouvé qu'en interrogeant Unity en direct",
+      "Le mutation testing a aussi révélé 137 lignes de code mort : un défaut injecté qui survit sans explication frappe souvent du code dont plus rien ne dépend",
+      "Trois fausses alertes du banc lui-même, diagnostiquées et corrigées côté test : calibrer les propriétés sur le contrat réel du code (un sommet à 1,6 µm d'une arête de 2,7 m n'est pas dessus) représente une bonne part du travail — un harnais qui crie au loup est abandonné en trois jours",
+    ],
+    gallery: [],
   },
   {
     id: "horror-ue5",
