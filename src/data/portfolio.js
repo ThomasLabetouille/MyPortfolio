@@ -1,49 +1,5 @@
 export const projects = [
   {
-    id: "comptoir",
-    title: "Comptoir",
-    subtitle: "Assistant de recherche de séjours à modèle de langage encadré — Projet personnel",
-    engine: "Python", category: "Logiciel",
-    tags: ["Python", "IA", "LLM local", "SQL", "Java", "Tests"],
-    year: "2026",
-    color: "#00c9a7",
-    role: "Développeur solo",
-    type: "Logiciel / IA appliquée",
-    status: "ongoing",
-    images: [],
-    description: "Un client de voyages formule sa demande comme il la dirait au téléphone ; Comptoir rend les séjours qui correspondent vraiment, avec leur prix réel pour cette composition familiale — et quand rien ne correspond, il nomme le critère à assouplir plutôt que de proposer quelque chose d'approchant. Le modèle de langage comprend la demande et rédige la réponse ; il ne décide de rien. Tout ce qui est vérifiable est tranché en Python.",
-    tech: ["Python 3.10+", "Ollama (LLM local)", "SQLite", "FastAPI", "Spring Boot (JDK 17)", "pytest", "GitHub Actions"],
-    highlights: [
-      "Séparation stricte entre ce que fait le modèle (comprendre la phrase, rédiger la réponse) et ce que fait le code : prix, dates, capacité des chambres, formule de restauration, aéroport de départ sont tranchés en Python, avec des comparaisons — aucun modèle n'est appelé pour savoir si 3 293 € tient dans un budget de 3 000 €",
-      "Chaque phrase de la réponse est rattachée par le modèle à un champ d'une fiche précise, puis re-vérifiée contre cette fiche avant affichage : une fiche jamais présentée au modèle, un champ inexistant ou un prix qui ne correspond pas au montant réellement calculé sont retirés et journalisés, jamais montrés au client",
-      "Quand rien ne correspond, le modèle n'est pas appelé du tout — c'est le moteur qui nomme le critère à assouplir, dans l'ordre où un agent négocie réellement : le budget d'abord, les dates ensuite, la destination en dernier",
-      "Le même filtrage reporté en SQLite (requête paramétrée avec EXISTS sur des tables normalisées) et confronté fiche par fiche et prix par prix à l'implémentation Python sur les 20 mêmes requêtes — le portage n'est pas supposé correct parce qu'il ressemble à l'original, il est vérifié contre lui",
-      "167 tests, dont les contrôles de contraintes dures ré-implémentés à la main plutôt qu'en appelant les fonctions du moteur : un test qui vérifie le code avec le code testé se contente de confirmer que la fonction est d'accord avec elle-même",
-      "Mesure en conditions réelles avec le modèle dans la boucle sur 20 demandes : extraction 20/20, abstention correcte 8/8 sur les cas insolubles, traçabilité moyenne 0,86 — et les motifs de rejet enregistrés, ce qui permet de distinguer un modèle qui invente d'un modèle qui bafouille",
-      "Reprise de contexte : « même chose mais pas plus de 3 000 euros » ne repart pas de zéro. Le modèle ne voit toujours que la dernière phrase ; c'est le code qui reprend champ par champ ce qu'elle ne mentionne pas. L'abstention est passée de 6/8 à 8/8 après ce correctif",
-      "Le noyau ne dépend que de la bibliothèque standard Python. L'interface web (FastAPI) vit dans un fichier de dépendances séparé pour ne pas casser cette règle, et une façade Spring Boot (JDK 17) expose le service en HTTP avec validation des requêtes",
-      "Trois défauts trouvés uniquement en mesurant ou en utilisant, pas en relisant : réponses tronquées par la fenêtre de contexte, boucles de répétition du modèle sur les listes, et une reprise de critères automatique qui faisait cumuler deux demandes sans rapport dès le deuxième essai",
-    ],
-    gallery: [],
-    sections: [
-      {
-        title: "Le modèle comprend, le code décide",
-        text: "Dans le tourisme, une hallucination n'est pas une curiosité : c'est un client qui arrive dans un hôtel sans le club enfants qu'on lui a promis. Le modèle de langage est donc cantonné à deux tâches — traduire une phrase libre en demande structurée, et rédiger la réponse finale. Tout ce qui se vérifie est tranché en Python, par des comparaisons. La sortie du modèle elle-même n'est pas crue sur parole : un JSON peut arriver entouré de balises markdown, tronqué, ou porter une formule qui n'existe pas dans le catalogue — ce qui est invalide est écarté, jamais deviné, et signalé comme non précisé.",
-        images: []
-      },
-      {
-        title: "Vérifié affirmation par affirmation",
-        text: "La rédaction ne se fait pas en texte libre : le modèle ne voit que les fiches déjà retenues par le filtrage, et doit rendre un JSON où chaque phrase cite explicitement un champ d'une fiche précise. Un vérificateur re-cherche ensuite chaque affirmation dans la fiche citée et retire tout ce qui ne correspond pas. Sur un passage de mesure, 12 affirmations sur 63 ont été écartées — aucune pour avoir contredit une fiche, toutes pour avoir été annoncées puis laissées vides.",
-        images: []
-      },
-      {
-        title: "Le même moteur, deux fois",
-        text: "Les critères qui se ramènent à une appartenance à un ensemble ont été réécrits en SQLite, dans une seule requête paramétrée. La période et le prix restent en Python — une intersection de plages de dates et une remise enfant n'ont pas leur place dans une clause WHERE sans devenir illisibles. Un test recompose le résultat complet et vérifie qu'il est identique, fiche par fiche et prix par prix, à celui du moteur Python sur les mêmes requêtes.",
-        images: []
-      },
-    ],
-  },
-  {
     id: "claude-ue5",
     title: "Agent IA × UE5",
     subtitle: "Pont MCP + plugin C++ pour piloter Unreal Engine 5 par IA — Projet personnel",
@@ -98,6 +54,58 @@ export const projects = [
     ],
   },
   {
+    id: "game-animation-sample",
+    title: "GameAnimationSample",
+    subtitle: "Boîte à outils UE5 : blockout, Behavior Trees par script, évaluation de l'agent — Projet personnel",
+    engine: "UE5", category: "UE5",
+    tags: ["UE5", "C++", "Slate", "IA", "Éditeur", "Behavior Trees", "Tests"],
+    year: "2026",
+    color: "#2ecc71",
+    role: "Développeur solo",
+    type: "Outillage / IA",
+    status: "ongoing",
+    images: [],
+    description: "Quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
+    tech: ["Unreal Engine 5.8", "C++", "Slate", "Python", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
+    highlights: [
+      "BlockoutTools — outil de level design Slate pour UE5.8 : salle paramétrique, contour dessiné dans le viewport puis extrudé en direct (Ctrl contraint à angles droits, Ctrl+F ferme d'équerre), et découpe de portes et fenêtres sur la surface survolée. Le panneau est livré à quelqu'un qui ne programme pas, avec une notice d'installation en trois minutes et une ligne de statut qui explique toujours ce qui s'est passé",
+      "La géométrie de BlockoutTools ne dépend d'aucune API Unreal — une centaine de lignes de doublures suffisent à la compiler hors moteur. Le harnais exerce donc les fichiers du projet, pas des copies : 40 000 contours en une seconde, contre un rebuild du plugin (éditeur fermé, ~2 min) plus un aller-retour dans l'éditeur",
+      "Des propriétés plutôt que des résultats figés : aire triangulée égale à l'aire du contour moins les trous, couverture exacte, prisme recto-verso d'épaisseur juste, seuil de dégénérescence relatif à la taille du panneau, aucune T-jonction, déterminisme au bit près",
+      "Un bug du harnais lui-même, trouvé avant qu'il ne serve : le générateur de contours tirait des angles uniformes puis les triait, ce qui ne donne un polygone simple que si les sommets font le tour du centre — 57 contours auto-intersectants sur 2 000 étaient reprochés au code testé. Deux seuils ont aussi dû être recalés sur le contrat réel du code plutôt que sur une intuition",
+      "BTAuthoringKit — plugin C++ qui expose une API scriptable pour construire des Behavior Trees complets (Blackboard, composites, tasks, decorators, services, graphe visuel inclus) sans jamais ouvrir l'éditeur de graphe. Écrit parce que ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree",
+      "Injection d'input au même point qu'une vraie pression de touche : elle traverse l'Input Mapping Context, les modifiers et les triggers. Mesuré en PIE réelle, 1037 cm parcourus en 4 s. C'est ce qui rend la vérification comportementale possible sans jamais piloter l'écran — les deux voies naturelles étant mortes, chacune pour une raison distincte",
+      "Un test de non-régression qui pilote seul une session de jeu (~52 s de temps de jeu) et vérifie sept points par le comportement réel plutôt que par l'état des données : arbre lancé, controller unique, déplacement, animation d'assise, détection par perception réelle, rapprochement du joueur, aucun PNJ figé",
+      "IA de PNJ à tolérance et habituation : trois niveaux d'attention écrits dans le Blackboard à 10 Hz, une habituation qui resserre les seuils quand le joueur reste à distance et qui se perd si on brusque le sujet. Le choix d'abort du decorator a été tranché par la mesure, pas par la doctrine — 1308 cm de fuite avec l'un, 2060 cm avec l'autre, pour un critère à 1500",
+      "Assise contextuelle : le joueur peut s'asseoir partout où la géométrie le permet, à n'importe quelle hauteur — pas sur une liste de paliers. Le domaine est proportionnel à la taille du personnage, lue sur sa capsule de collision : un rebord de 80 cm est un siège pour un adulte et un mur pour un enfant",
+      "Combat à deux mains avec des règles d'input distinctes par touche, IA de combat en machine à états C++ réutilisée par héritage sur plusieurs archétypes, et un système de puzzle interrupteurs → porte générique, instancié par script pour n'importe quelle séquence plutôt que codé en dur",
+      "EvalHarness — dix scénarios qui notent le comportement de l'agent IA lui-même, chacun reproduisant avec des outils factices un piège réellement documenté dans l'historique du projet. L'agent reçoit une tâche ambiguë, un outil piégé et un outil fiable ; sa trajectoire est notée : a-t-il pris le bon outil, et sa conclusion est-elle fondée sur ce qu'il a vérifié plutôt que supposé",
+      "Le harnais tourne en gate CI à chaque modification des règles du projet, avec un seuil de passage qui fait échouer le build — et les règles injectées dans l'éval sont extraites du fichier de règles réel, donc une règle qui change là-bas est suivie sans duplication. Les points d'entrée qui comptent exposent des spans OpenTelemetry (durée, verdict, compteurs de régression) plutôt que des lignes de log à recompter à la main",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Une contrainte qui force l'outillage",
+        text: "Le projet interdit de piloter l'écran. Tout doit être scriptable — et c'est en s'y tenant qu'on découvre ce qui manque vraiment. Construire un Behavior Tree par script a buté sur une limite réelle : ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree, seulement des Blueprints classiques. BTAuthoringKit comble exactement ce trou. Vérifier un comportement en jeu a buté sur une autre limite : le pawn joueur ne consomme pas l'input Blueprint standard, et l'injection Enhanced Input directe est inatteignable depuis Python. La bibliothèque d'input scripté ne fait qu'une chose — obtenir l'instance qui manquait — et l'input entre ensuite au même point qu'une vraie touche.",
+        images: []
+      },
+      {
+        title: "Vérifier la géométrie hors moteur",
+        text: "Le noyau géométrique de l'outil de blockout ne référence aucun type Unreal. Une centaine de lignes de doublures suffisent donc à le compiler et à l'exercer en dehors de l'éditeur : une passe de 40 000 contours prend une seconde, là où un rebuild du plugin demande de fermer l'éditeur et deux minutes. Le harnais compile les fichiers du projet, pas des copies — si la géométrie se met à utiliser un type Unreal absent des doublures, il ne compile plus et on le sait immédiatement. Ce qui est vérifié n'est pas une liste de résultats attendus mais des propriétés qui doivent tenir pour n'importe quelle entrée.",
+        images: []
+      },
+      {
+        title: "Vérifier le comportement, pas l'état des données",
+        text: "Un log vide ne prouve pas qu'un arbre ne tourne pas ; un decorator présent dans un asset ne prouve pas qu'il agit. Le test de non-régression pilote donc une vraie session de jeu et interroge l'état runtime — arbre en cours, valeurs du Blackboard, position, montage d'animation actif. Il existe parce que trois régressions d'une même journée auraient toutes été attrapées en une minute par ce test, et ont à la place coûté une session entière : la vérification portait sur l'état des données, jamais sur le comportement réel.",
+        images: []
+      },
+      {
+        title: "Et l'agent lui-même",
+        text: "Le dernier angle mort était plus en amont : rien ne garantissait que l'agent qui pilote tout ça respecte les règles que le projet lui impose. Documenter une règle après un incident répare le passé ; elle ne protège pas contre la fois suivante, avec une tâche formulée autrement. Dix scénarios reproduisent donc, avec des outils factices, des pièges réellement rencontrés — un screenshot périmé face à une capture fraîche, une compilation réussie prise pour une vérification de gameplay — et notent la trajectoire de l'agent. Le tout en gate CI, parce qu'une procédure non vérifiable finit par ne pas être suivie.",
+        images: []
+      },
+    ],
+  },
+  {
     id: "level-design-tools",
     title: "Room Builder Unity",
     subtitle: "Outils d'éditeur pour blockout + banc de vérification géométrique — Projet personnel",
@@ -123,6 +131,50 @@ export const projects = [
       "Trois fausses alertes du banc lui-même, diagnostiquées et corrigées côté test : calibrer les propriétés sur le contrat réel du code (un sommet à 1,6 µm d'une arête de 2,7 m n'est pas dessus) représente une bonne part du travail — un harnais qui crie au loup est abandonné en trois jours",
     ],
     gallery: [],
+  },
+  {
+    id: "comptoir",
+    title: "Comptoir",
+    subtitle: "Assistant de recherche de séjours à modèle de langage encadré — Projet personnel",
+    engine: "Python", category: "Logiciel",
+    tags: ["Python", "IA", "LLM local", "SQL", "Java", "Tests"],
+    year: "2026",
+    color: "#00c9a7",
+    role: "Développeur solo",
+    type: "Logiciel / IA appliquée",
+    status: "ongoing",
+    images: [],
+    description: "Un client de voyages formule sa demande comme il la dirait au téléphone ; Comptoir rend les séjours qui correspondent vraiment, avec leur prix réel pour cette composition familiale — et quand rien ne correspond, il nomme le critère à assouplir plutôt que de proposer quelque chose d'approchant. Le modèle de langage comprend la demande et rédige la réponse ; il ne décide de rien. Tout ce qui est vérifiable est tranché en Python.",
+    tech: ["Python 3.10+", "Ollama (LLM local)", "SQLite", "FastAPI", "Spring Boot (JDK 17)", "pytest", "GitHub Actions"],
+    highlights: [
+      "Séparation stricte entre ce que fait le modèle (comprendre la phrase, rédiger la réponse) et ce que fait le code : prix, dates, capacité des chambres, formule de restauration, aéroport de départ sont tranchés en Python, avec des comparaisons — aucun modèle n'est appelé pour savoir si 3 293 € tient dans un budget de 3 000 €",
+      "Chaque phrase de la réponse est rattachée par le modèle à un champ d'une fiche précise, puis re-vérifiée contre cette fiche avant affichage : une fiche jamais présentée au modèle, un champ inexistant ou un prix qui ne correspond pas au montant réellement calculé sont retirés et journalisés, jamais montrés au client",
+      "Quand rien ne correspond, le modèle n'est pas appelé du tout — c'est le moteur qui nomme le critère à assouplir, dans l'ordre où un agent négocie réellement : le budget d'abord, les dates ensuite, la destination en dernier",
+      "Le même filtrage reporté en SQLite (requête paramétrée avec EXISTS sur des tables normalisées) et confronté fiche par fiche et prix par prix à l'implémentation Python sur les 20 mêmes requêtes — le portage n'est pas supposé correct parce qu'il ressemble à l'original, il est vérifié contre lui",
+      "167 tests, dont les contrôles de contraintes dures ré-implémentés à la main plutôt qu'en appelant les fonctions du moteur : un test qui vérifie le code avec le code testé se contente de confirmer que la fonction est d'accord avec elle-même",
+      "Mesure en conditions réelles avec le modèle dans la boucle sur 20 demandes : extraction 20/20, abstention correcte 8/8 sur les cas insolubles, traçabilité moyenne 0,86 — et les motifs de rejet enregistrés, ce qui permet de distinguer un modèle qui invente d'un modèle qui bafouille",
+      "Reprise de contexte : « même chose mais pas plus de 3 000 euros » ne repart pas de zéro. Le modèle ne voit toujours que la dernière phrase ; c'est le code qui reprend champ par champ ce qu'elle ne mentionne pas. L'abstention est passée de 6/8 à 8/8 après ce correctif",
+      "Le noyau ne dépend que de la bibliothèque standard Python. L'interface web (FastAPI) vit dans un fichier de dépendances séparé pour ne pas casser cette règle, et une façade Spring Boot (JDK 17) expose le service en HTTP avec validation des requêtes",
+      "Trois défauts trouvés uniquement en mesurant ou en utilisant, pas en relisant : réponses tronquées par la fenêtre de contexte, boucles de répétition du modèle sur les listes, et une reprise de critères automatique qui faisait cumuler deux demandes sans rapport dès le deuxième essai",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Le modèle comprend, le code décide",
+        text: "Dans le tourisme, une hallucination n'est pas une curiosité : c'est un client qui arrive dans un hôtel sans le club enfants qu'on lui a promis. Le modèle de langage est donc cantonné à deux tâches — traduire une phrase libre en demande structurée, et rédiger la réponse finale. Tout ce qui se vérifie est tranché en Python, par des comparaisons. La sortie du modèle elle-même n'est pas crue sur parole : un JSON peut arriver entouré de balises markdown, tronqué, ou porter une formule qui n'existe pas dans le catalogue — ce qui est invalide est écarté, jamais deviné, et signalé comme non précisé.",
+        images: []
+      },
+      {
+        title: "Vérifié affirmation par affirmation",
+        text: "La rédaction ne se fait pas en texte libre : le modèle ne voit que les fiches déjà retenues par le filtrage, et doit rendre un JSON où chaque phrase cite explicitement un champ d'une fiche précise. Un vérificateur re-cherche ensuite chaque affirmation dans la fiche citée et retire tout ce qui ne correspond pas. Sur un passage de mesure, 12 affirmations sur 63 ont été écartées — aucune pour avoir contredit une fiche, toutes pour avoir été annoncées puis laissées vides.",
+        images: []
+      },
+      {
+        title: "Le même moteur, deux fois",
+        text: "Les critères qui se ramènent à une appartenance à un ensemble ont été réécrits en SQLite, dans une seule requête paramétrée. La période et le prix restent en Python — une intersection de plages de dates et une remise enfant n'ont pas leur place dans une clause WHERE sans devenir illisibles. Un test recompose le résultat complet et vérifie qu'il est identique, fiche par fiche et prix par prix, à celui du moteur Python sur les mêmes requêtes.",
+        images: []
+      },
+    ],
   },
   {
     id: "horror-ue5",
@@ -180,48 +232,6 @@ export const projects = [
       {
         title: "Contournement bug Enhanced Input UE5.8",
         text: "Bug documenté : les modifiers Enhanced Input (deadzone, swizzle, etc.) ne persistent pas entre sessions PIE en UE5.7/5.8. Solution implémentée : remplacement par IsInputKeyDown() sur les axes critiques, avec mapping AZERTY explicite. Solution reproductible, documentée, et déjà réutilisée sur un projet suivant.",
-        images: []
-      },
-    ],
-  },
-  {
-    id: "rpg-ue5",
-    title: "RPG 3e Personne",
-    subtitle: "Projet personnel — combat, IA ennemie, puzzle (UE5.8)",
-    engine: "UE5", category: "UE5",
-    tags: ["UE5", "C++", "RPG", "Combat", "AI", "Puzzle"],
-    year: "2026",
-    color: "#2ecc71",
-    role: "Développeur solo",
-    type: "RPG / Combat",
-    status: "ongoing",
-    images: [],
-    description: "RPG à la 3e personne façon Witcher sur UE5.8. Système de combat à deux mains (épée/bouclier) avec règles d'input distinctes par touche, IA ennemie en C++ pilotée par une vraie machine à états, puzzle générique interrupteurs→porte, objectifs multiples et inventaire d'objets ramassables.",
-    tech: ["Unreal Engine 5.8", "C++", "Blueprint", "Python (Editor scripting)", "Finite State Machine"],
-    highlights: [
-      "Système de combat à deux mains indépendantes (épée en main gauche, bouclier en main droite) avec des règles distinctes par type d'input — tap déclenche une action, hold en déclenche une autre, sans dépendre du système Repeat d'Enhanced Input",
-      "IA ennemie en C++ (ARPGEnemy) pilotée par une vraie machine à états (Idle → Patrol → Chase → Attack → Dead), paramètres de détection/poursuite/attaque exposés en UPROPERTY et réutilisés par héritage sur plusieurs archétypes d'ennemis",
-      "Système de puzzle générique interrupteurs → porte, construit une seule fois puis instancié par script pour n'importe quelle séquence, plutôt que codé en dur pour un cas unique",
-      "Réutilisation directe d'un bug déjà résolu sur un projet précédent (modifiers Enhanced Input non persistants) — même solution appliquée immédiatement, sans le redécouvrir",
-      "Diagnostic d'un bug de sauvegarde de niveau : les modifications de position/tags d'acteurs étaient perdues au redémarrage malgré un save() « réussi », à cause du mode One File Per Actor du niveau — cause racine isolée par comparaison de fichiers, corrigée à la source",
-      "Discipline de calibration : une valeur de tuning trouvée en modifiant un composant en direct (position d'une épée tenue en main) est systématiquement reportée dans le code source C++, plutôt que laissée comme un correctif runtime qui ne survit pas à une recompilation",
-      "Système d'interaction (touche E) validé uniquement une fois testé par une vraie pression de touche en jeu — un premier test par appel direct sur la cible avait masqué un bug réel de détection de collision",
-    ],
-    gallery: [],
-    sections: [
-      {
-        title: "Combat & IA ennemie",
-        text: "Le personnage gère deux mains indépendantes : épée à gauche, bouclier à droite, chacune avec ses propres règles de tap/hold. Les ennemis (ARPGEnemy, C++) suivent une machine à états complète — détection, poursuite, attaque au contact, retour en patrouille — dont les paramètres sont réglables par instance et réutilisés par héritage pour créer de nouveaux archétypes sans dupliquer la logique.",
-        images: []
-      },
-      {
-        title: "Puzzle générique & objectifs",
-        text: "Le système de puzzle interrupteurs→porte est générique : une fonction construit la séquence complète (portes, interrupteurs, câblage) pour n'importe quel nombre d'interrupteurs, réutilisable sur d'autres niveaux. Un système d'objectifs multiples affiche la progression (ennemis restants, statut du puzzle) via un widget dédié.",
-        images: []
-      },
-      {
-        title: "Ce qui devrait intéresser un recruteur technique",
-        text: "Au-delà des mécaniques de jeu, ce projet documente une vraie discipline de débogage : un bug de sauvegarde de niveau où save() retournait un succès sans jamais réécrire certains fichiers d'acteurs sur disque, isolé par comparaison de fichiers avant/après ; une calibration de position d'objet tenu en main reportée du runtime vers le code source C++ pour ne plus dépendre d'un correctif fragile ; un système d'interaction déclaré fonctionnel seulement après un test par vraie pression de touche, après avoir découvert qu'un appel direct sur la cible masquait un bug réel. Ce sont exactement le genre de bugs qui n'apparaissent qu'en conditions réelles, pas en test isolé — et la méthode pour les débusquer est appliquée de façon systématique tout au long du projet.",
         images: []
       },
     ],
