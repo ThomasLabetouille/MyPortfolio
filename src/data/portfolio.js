@@ -55,20 +55,23 @@ export const projects = [
     ],
   },
   {
-    id: "game-animation-sample",
-    title: "GameAnimationSample",
-    subtitle: "Boîte à outils UE5 : blockout, Behavior Trees par script, évaluation de l'agent, assistant IA local — Projet personnel",
+    id: "assistant-ue5-local",
+    title: "Assistant IA local × UE5",
+    subtitle: "Assistant qui pilote Unreal Engine 5.8 en langage naturel, 100 % en local, et la boîte à outils du projet GameAnimationSample — Projet personnel",
     engine: "UE5", category: "UE5",
-    tags: ["UE5", "C++", "Slate", "IA", "Éditeur", "Behavior Trees", "Tests"],
+    tags: ["IA", "LLM local", "MCP", "RAG", "UE5", "C++", "Behavior Trees", "Tests"],
     year: "2026",
     color: "#2ecc71",
     role: "Développeur solo",
-    type: "Outillage / IA",
+    type: "Outil / IA locale",
     status: "ongoing",
-    images: ["/images/game-animation-sample/cover.png"],
-    description: "Quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet. Le projet se pilote aussi en langage naturel avec un assistant IA qui tourne entièrement en local sur la carte graphique, sans compte ni abonnement.",
-    tech: ["Unreal Engine 5.8", "C++", "Slate", "Python", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions", "Ollama", "Qwen2.5-Coder 14B", "MCP", "RAG"],
+    images: ["/images/assistant-ue5-local/cover.png"],
+    description: "Un assistant en langage naturel qui pilote Unreal Engine 5.8 en tournant entièrement sur ma carte graphique : pas de compte, pas d'abonnement, pas de connexion une fois installé. Son terrain est GameAnimationSample, autour duquel se sont construits quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
+    tech: ["Ollama", "Qwen2.5-Coder 14B", "MCP", "RAG", "Python", "Unreal Engine 5.8", "C++", "Slate", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
     highlights: [
+      "Assistant UE5 local — Qwen2.5-Coder 14B via Ollama sur une RTX 4070, boucle d'agent et client MCP maison branchés sur les serveurs Unreal (dont celui du projet : PNJ, Behavior Trees, playtest). Aucune connexion Internet une fois installé",
+      "RAG construit depuis l'éditeur lui-même : 14 572 méthodes de l'API Python d'UE 5.8.2 et 3 931 assets du projet avec leurs vrais chemins, pour que le modèle cesse d'inventer des fonctions et des chemins qui n'existent pas. Conventions du projet injectées à chaque message, règles situationnelles servies seulement quand elles concernent la question",
+      "Garde-fous côté code plutôt que confiance dans le modèle : confirmation avant tout outil qui modifie le projet (une phrase en réponse redirige le modèle), appel d'outil écrit en texte exécuté seulement si l'outil existe vraiment, plafond de temps sur chaque appel MCP, journal des pannes, et impossibilité d'annoncer une réussite après un échec d'outil — 22 scripts de test avec un faux modèle, sans Unreal",
       "BlockoutTools — outil de level design Slate pour UE5.8 : salle paramétrique, contour dessiné dans le viewport puis extrudé en direct (Ctrl contraint à angles droits, Ctrl+F ferme d'équerre), et découpe de portes et fenêtres sur la surface survolée. Le panneau est livré à quelqu'un qui ne programme pas, avec une notice d'installation en trois minutes et une ligne de statut qui explique toujours ce qui s'est passé",
       "La géométrie de BlockoutTools ne dépend d'aucune API Unreal — une centaine de lignes de doublures suffisent à la compiler hors moteur. Le harnais exerce donc les fichiers du projet, pas des copies : 40 000 contours en une seconde, contre un rebuild du plugin (éditeur fermé, ~2 min) plus un aller-retour dans l'éditeur",
       "Des propriétés plutôt que des résultats figés : aire triangulée égale à l'aire du contour moins les trous, couverture exacte, prisme recto-verso d'épaisseur juste, seuil de dégénérescence relatif à la taille du panneau, aucune T-jonction, déterminisme au bit près",
@@ -81,12 +84,14 @@ export const projects = [
       "Combat à deux mains avec des règles d'input distinctes par touche, IA de combat en machine à états C++ réutilisée par héritage sur plusieurs archétypes, et un système de puzzle interrupteurs → porte générique, instancié par script pour n'importe quelle séquence plutôt que codé en dur",
       "EvalHarness — dix scénarios qui notent le comportement de l'agent IA lui-même, chacun reproduisant avec des outils factices un piège réellement documenté dans l'historique du projet. L'agent reçoit une tâche ambiguë, un outil piégé et un outil fiable ; sa trajectoire est notée : a-t-il pris le bon outil, et sa conclusion est-elle fondée sur ce qu'il a vérifié plutôt que supposé",
       "Le harnais tourne en gate CI à chaque modification des règles du projet, avec un seuil de passage qui fait échouer le build — et les règles injectées dans l'éval sont extraites du fichier de règles réel, donc une règle qui change là-bas est suivie sans duplication. Les points d'entrée qui comptent exposent des spans OpenTelemetry (durée, verdict, compteurs de régression) plutôt que des lignes de log à recompter à la main",
-      "Assistant UE5 local — Qwen2.5-Coder 14B via Ollama sur une RTX 4070, boucle d'agent et client MCP maison branchés sur les serveurs Unreal (dont celui du projet : PNJ, Behavior Trees, playtest). Aucune connexion Internet une fois installé",
-      "RAG construit depuis l'éditeur lui-même : 14 572 méthodes de l'API Python d'UE 5.8.2 et 3 931 assets du projet avec leurs vrais chemins, pour que le modèle cesse d'inventer des fonctions et des chemins qui n'existent pas. Conventions du projet injectées à chaque message, règles situationnelles servies seulement quand elles concernent la question",
-      "Garde-fous côté code plutôt que confiance dans le modèle : confirmation avant tout outil qui modifie le projet (une phrase en réponse redirige le modèle), appel d'outil écrit en texte exécuté seulement si l'outil existe vraiment, plafond de temps sur chaque appel MCP, journal des pannes, et impossibilité d'annoncer une réussite après un échec d'outil — 22 scripts de test avec un faux modèle, sans Unreal",
     ],
     gallery: [],
     sections: [
+      {
+        title: "Un assistant qui tourne en local",
+        text: "Un modèle de 14 milliards de paramètres sur une carte de 12 Go ne raisonne pas comme un grand modèle en ligne : il se trompe plus, invente des API et annonce volontiers un succès. L'assistant compense par le code. Les vraies signatures et les vrais chemins d'assets lui sont mis sous les yeux avant qu'il réponde, une question n'est jamais traitée comme un ordre, chaque modification attend un accord, et une réponse qui déclare « le PNJ est prêt » juste après une erreur d'outil est interceptée. Sur des tâches cadrées — écrire un script Unreal, créer un PNJ, régler une scène — il est utilisable au quotidien, sans coût.",
+        images: []
+      },
       {
         title: "Une contrainte qui force l'outillage",
         text: "Le projet interdit de piloter l'écran. Tout doit être scriptable — et c'est en s'y tenant qu'on découvre ce qui manque vraiment. Construire un Behavior Tree par script a buté sur une limite réelle : ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree, seulement des Blueprints classiques. BTAuthoringKit comble exactement ce trou. Vérifier un comportement en jeu a buté sur une autre limite : le pawn joueur ne consomme pas l'input Blueprint standard, et l'injection Enhanced Input directe est inatteignable depuis Python. La bibliothèque d'input scripté ne fait qu'une chose — obtenir l'instance qui manquait — et l'input entre ensuite au même point qu'une vraie touche.",
@@ -105,11 +110,6 @@ export const projects = [
       {
         title: "Et l'agent lui-même",
         text: "Le dernier angle mort était plus en amont : rien ne garantissait que l'agent qui pilote tout ça respecte les règles que le projet lui impose. Documenter une règle après un incident répare le passé ; elle ne protège pas contre la fois suivante, avec une tâche formulée autrement. Dix scénarios reproduisent donc, avec des outils factices, des pièges réellement rencontrés — un screenshot périmé face à une capture fraîche, une compilation réussie prise pour une vérification de gameplay — et notent la trajectoire de l'agent. Le tout en gate CI, parce qu'une procédure non vérifiable finit par ne pas être suivie.",
-        images: []
-      },
-      {
-        title: "Un assistant qui tourne en local",
-        text: "Un modèle de 14 milliards de paramètres sur une carte de 12 Go ne raisonne pas comme un grand modèle en ligne : il se trompe plus, invente des API et annonce volontiers un succès. L'assistant compense par le code. Les vraies signatures et les vrais chemins d'assets lui sont mis sous les yeux avant qu'il réponde, une question n'est jamais traitée comme un ordre, chaque modification attend un accord, et une réponse qui déclare « le PNJ est prêt » juste après une erreur d'outil est interceptée. Sur des tâches cadrées — écrire un script Unreal, créer un PNJ, régler une scène — il est utilisable au quotidien, sans coût.",
         images: []
       },
     ],
