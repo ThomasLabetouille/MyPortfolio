@@ -10,7 +10,7 @@ export const projects = [
     role: "Développeur solo",
     type: "Outil / IA",
     status: "completed",
-    images: ["/images/claude-ue5/cover_overview.png"],
+    images: ["/images/claude-ue5/cover.png"],
     description: "Toolchain qui permet à un agent IA conversationnel (Claude, via MCP) de piloter l'éditeur Unreal Engine 5 de façon fiable : génération procédurale de niveaux, édition de Blueprints par script, spawn d'acteurs — avec vérification automatique (tests, screenshot, playtest) avant que le moindre résultat ne soit sauvegardé.",
     tech: ["Unreal Engine 5.7", "C++", "Slate UI", "Python", "MCP", "Claude AI", "Blueprint", "GitHub Actions", "pytest"],
     highlights: [
@@ -64,7 +64,7 @@ export const projects = [
     role: "Développeur solo",
     type: "Outillage / IA",
     status: "ongoing",
-    images: ["/images/game-animation-sample/cover.jpg"],
+    images: ["/images/game-animation-sample/cover.png"],
     description: "Quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
     tech: ["Unreal Engine 5.8", "C++", "Slate", "Python", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
     highlights: [
