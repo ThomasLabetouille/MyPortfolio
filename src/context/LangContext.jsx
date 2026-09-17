@@ -138,7 +138,7 @@ export const projectsData = {
       highlights: ["Conception d'une île fantaisiste avec biomes variés (lac, village, désert...)", "Système de quêtes avec journal d'objectifs et progression narrative", "Migration du projet UE4 vers UE5", "Level design de la map principale", "Système d'interaction PNJ"],
       sections: [
         { title: "Monde & Biomes", text: "L'île est découpée en plusieurs biomes : plaines, swamp, désert, cavernes, montagnes enneigées et île du volcan. Chaque zone a ses propres assets, ennemis et quêtes." },
-        { title: "Gameplay & Systèmes", text: "Système de quêtes avec journal d'objectifs, interactions PNJ, crafting et combat à la 3e personne. Le jeu est en pré-alpha." },
+        { title: "Gameplay & Systèmes", text: "Système de quêtes avec journal d'objectifs, interactions PNJ, crafting et combat à la 3e personne." },
       ],
     },
     "virtual-badass": {
@@ -314,7 +314,7 @@ export const projectsData = {
       highlights: ["Fantasy island with varied biomes (lake, village, desert...)", "Quest system with objective journal and narrative progression", "Migration from UE4 to UE5", "Main map level design", "NPC interaction system"],
       sections: [
         { title: "World & Biomes", text: "The island is split into biomes: plains, swamp, desert, caverns, snowy mountains and volcano island. Each zone has its own assets, enemies and quests." },
-        { title: "Gameplay & Systems", text: "Quest system with objective journal, NPC interactions, crafting and third-person combat. Game is in pre-alpha." },
+        { title: "Gameplay & Systems", text: "Quest system with objective journal, NPC interactions, crafting and third-person combat." },
       ],
     },
     "virtual-badass": {

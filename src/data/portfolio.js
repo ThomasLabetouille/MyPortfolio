@@ -9,7 +9,7 @@ export const projects = [
     color: "#00d4ff",
     role: "Développeur solo",
     type: "Outil / IA",
-    status: "ongoing",
+    status: "completed",
     images: ["/images/claude-ue5/cover_overview.png"],
     description: "Toolchain qui permet à un agent IA conversationnel (Claude, via MCP) de piloter l'éditeur Unreal Engine 5 de façon fiable : génération procédurale de niveaux, édition de Blueprints par script, spawn d'acteurs — avec vérification automatique (tests, screenshot, playtest) avant que le moindre résultat ne soit sauvegardé.",
     tech: ["Unreal Engine 5.7", "C++", "Slate UI", "Python", "MCP", "Claude AI", "Blueprint", "GitHub Actions", "pytest"],
@@ -64,7 +64,7 @@ export const projects = [
     role: "Développeur solo",
     type: "Outillage / IA",
     status: "ongoing",
-    images: [],
+    images: ["/images/game-animation-sample/cover.jpg"],
     description: "Quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
     tech: ["Unreal Engine 5.8", "C++", "Slate", "Python", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
     highlights: [
@@ -115,8 +115,8 @@ export const projects = [
     color: "#ffb400",
     role: "Développeur solo",
     type: "Outil / IA",
-    status: "ongoing",
-    images: [],
+    status: "completed",
+    images: ["/images/level-design-tools/cover.png"],
     description: "Outils d'éditeur Unity pour blockouter des niveaux : génération de salles, contour dessiné à la souris puis extrudé en direct, découpe d'ouvertures sur la surface visée. Le code de l'outil est écrit en grande partie par un agent Claude piloté en MCP depuis l'éditeur ; le travail porte surtout sur la couche qui vérifie ce qu'il produit — du code qui compile et qui a l'air de marcher n'est pas du code correct.",
     tech: ["Unity 6000.5", "C#", "URP", "MCP", "Claude AI", ".NET 8", "Tests de propriétés", "Mutation testing"],
     highlights: [
@@ -142,8 +142,8 @@ export const projects = [
     color: "#00c9a7",
     role: "Développeur solo",
     type: "Logiciel / IA appliquée",
-    status: "ongoing",
-    images: [],
+    status: "completed",
+    images: ["/images/comptoir/cover.png"],
     description: "Un client de voyages formule sa demande comme il la dirait au téléphone ; Comptoir rend les séjours qui correspondent vraiment, avec leur prix réel pour cette composition familiale — et quand rien ne correspond, il nomme le critère à assouplir plutôt que de proposer quelque chose d'approchant. Le modèle de langage comprend la demande et rédige la réponse ; il ne décide de rien. Tout ce qui est vérifiable est tranché en Python.",
     tech: ["Python 3.10+", "Ollama (LLM local)", "SQLite", "FastAPI", "Spring Boot (JDK 17)", "pytest", "GitHub Actions"],
     highlights: [
@@ -182,12 +182,12 @@ export const projects = [
     subtitle: "Jeu personnel",
     engine: "UE5", category: "UE5",
     tags: ["UE5", "C++", "IA", "Horror"],
-    year: "2024–présent",
+    year: "2024–2026",
     color: "#ff4d00",
     role: "Développeur solo",
     type: "Horreur",
-    status: "ongoing",
-    images: [],
+    status: "completed",
+    images: ["/images/horror-ue5/cover.jpg"],
     description: "Jeu d'horreur solo développé sur Unreal Engine 5. Le joueur est poursuivi par des mannequins animés qui s'activent dans l'obscurité. Système de détection par la lumière, IA comportementale, gestion de la tension sonore.",
     tech: ["Unreal Engine 5", "C++", "Blueprints", "Behavior Trees", "AI Perception", "Lumen"],
     highlights: [
@@ -208,7 +208,7 @@ export const projects = [
     role: "Développeur solo",
     type: "Gameplay / Physique",
     status: "completed",
-    images: [],
+    images: ["/images/hover-ue5/cover.jpg"],
     description: "Système de personnage C++ en Unreal Engine 5.8 combinant un mode marche standard et un mode hover avec banking, alignement de surface et accélération sur pente. Inclut un terrain désertique procédural généré en C++ et un calibrage physique itératif par comparaison avec des jeux hover de référence pour obtenir un ressenti crédible.",
     tech: ["Unreal Engine 5.8", "C++", "ProceduralMeshComponent", "Enhanced Input", "Physics"],
     highlights: [
@@ -247,7 +247,7 @@ export const projects = [
     role: "Gameplay Programmer",
     type: "Action-Aventure",
     status: "completed",
-    images: [],
+    images: ["/images/rainbow-ant/cover.png"],
     description: "Mission freelance d'un an en tant que Gameplay Programmer sur un jeu d'action-aventure. Développement des mécaniques du personnage, système de natation, météo dynamique et gestion de map interactive.",
     tech: ["Unreal Engine 5", "C++", "Blueprints", "Animation Blueprints"],
     highlights: [
@@ -269,7 +269,7 @@ export const projects = [
     role: "Technicien Systèmes Embarqués",
     type: "Simulation Défense",
     status: "completed",
-    images: [],
+    images: ["/images/cs-group/cover.png"],
     description: "Développement sur un simulateur d'appareil aéronautique pour la défense nationale. Environnement contraint, documentation classifiée, collaboration avec experts métiers et ingénieurs système.",
     tech: ["Inscape VTS", "C#", "Architecture modulaire", "Temps réel"],
     highlights: [
@@ -310,7 +310,7 @@ export const projects = [
     ],
     sections: [
       { title: "Monde & Biomes", text: "L'île est découpée en plusieurs biomes distincts : plaines, swamp, désert, cavernes, montagnes enneigées et île du volcan. Chaque zone a ses propres assets, ennemis et quêtes.", images: ["/images/time-restore/Map_Croquis.png", "/images/time-restore/Biome_Lake.png", "/images/time-restore/Entree_du_village.png"] },
-      { title: "Gameplay & Systèmes", text: "Système de quêtes avec journal d'objectifs, interactions PNJ, crafting et combat à la 3e personne. Le jeu est en pré-alpha et continue d'évoluer.", images: ["/images/time-restore/Character.png", "/images/time-restore/PNJ_Interaction.png", "/images/time-restore/Obstacle.png"] },
+      { title: "Gameplay & Systèmes", text: "Système de quêtes avec journal d'objectifs, interactions PNJ, crafting et combat à la 3e personne.", images: ["/images/time-restore/Character.png", "/images/time-restore/PNJ_Interaction.png", "/images/time-restore/Obstacle.png"] },
     ],
   },
   {
