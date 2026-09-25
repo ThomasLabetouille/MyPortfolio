@@ -72,9 +72,11 @@ export const projectsData = {
         "Trois fausses alertes du banc lui-même, diagnostiquées et corrigées côté test : calibrer les propriétés sur le contrat réel du code (un sommet à 1,6 µm d'une arête de 2,7 m n'est pas dessus) représente une bonne part du travail — un harnais qui crie au loup est abandonné en trois jours",
       ],
       sections: [
-        { title: "Trois modes de blockout", text: "Le mode Boîte produit une salle rectangulaire à partir de dimensions. Le mode Dessin libre laisse cliquer un contour dans la vue Scene : une fois fermé, la hauteur suit la souris jusqu'au clic de validation, Ctrl aimante sur la grille et tirer sous le plan de dessin extrude vers le bas. Le mode Découpe perce une ouverture — porte, fenêtre, trémie — directement sur la surface survolée. La découpe accepte tout contour plat extrudé, y compris une boîte venue d'ailleurs ; un cylindre ou une sphère sont refusés avec la raison, parce que la reconstruction les remplacerait par une boîte." },
         { title: "Des propriétés, pas des résultats figés", text: "La triangulation et l'assemblage 3D ne dépendent d'aucune API Unity — une centaine de lignes de doublures pour Vector2, Vector3 et Mathf suffisent. Le banc compile donc les fichiers du projet, pas des copies, et les exerce hors éditeur. Ce qui est vérifié n'est pas une liste de résultats attendus mais des propriétés qui doivent tenir pour n'importe quelle entrée. Les cas tirés au hasard sont complétés par des régressions figées — chacune est un défaut qui a réellement existé, et chacune a été vue échouer sur la version qui le portait." },
         { title: "Mesurer ce que la vérification vaut", text: "Une batterie de tests qui passe ne dit pas ce qu'elle attraperait. Le harnais de mutation injecte 21 défauts plausibles, un par un, et compte combien la batterie en rattrape : 19 sur 21. Les deux survivants frappent du code dont rien ne dépend. La mesure est partie de 67 % — les propriétés ajoutées depuis existent parce qu'un défaut injecté passait sans être vu, pas parce qu'elles semblaient une bonne idée." },
+        { title: "Ce que le banc a trouvé", text: "Dans du code qui compilait et fonctionnait à l'écran : un seuil fixe là où il en fallait un relatif, qui changeait le maillage d'un même mur selon sa position dans le niveau ; une extrapolation qui posait un sommet à l'intérieur d'un trou voisin, un cas sur 1 500 ; une fissure de 15 µm entre la face d'un mur et son chant ; et le cylindre d'Unity accepté comme une boîte — celui-là, aucun test hors moteur ne pouvait le voir, il a fallu interroger l'éditeur en direct. Chaque défaut réel est devenu un cas de régression figé, et chacun a été vu échouer sur la version qui le portait." },
+        { title: "Lancer les vérifications", text: "Deux commandes : GeometryTests (une dizaine de secondes, propriétés vérifiées sur des milliers de cas) et MutationTests (environ quatre minutes, injection de défauts un par un). Les deux rendent 0 si tout passe et 1 sinon : elles peuvent bloquer un commit ou tourner en intégration continue. Le code et les deux bancs sont publics sur GitHub." },
+        { title: "Trois modes de blockout", text: "Le mode Boîte produit une salle rectangulaire à partir de dimensions. Le mode Dessin libre laisse cliquer un contour dans la vue Scene : une fois fermé, la hauteur suit la souris jusqu'au clic de validation, Ctrl aimante sur la grille et tirer sous le plan de dessin extrude vers le bas. Le mode Découpe perce une ouverture — porte, fenêtre, trémie — directement sur la surface survolée. La découpe accepte tout contour plat extrudé, y compris une boîte venue d'ailleurs ; un cylindre ou une sphère sont refusés avec la raison, parce que la reconstruction les remplacerait par une boîte." },
       ],
     },
     "horror-ue5": {
@@ -146,7 +148,12 @@ export const projectsData = {
       title: "Simulateur Aéronautique", subtitle: "CS Group — Défense", type: "Simulation Défense", role: "Technicien Systèmes Embarqués",
       description: "Simulateurs aéronautiques Inscape VTS pour un programme de défense nationale, 14 mois chez CS Group. Scénarios d'entraînement temps réel sous exigences fonctionnelles strictes et validation formelle, en lien direct avec ingénieurs systèmes et pilotes. Environnement défense réglementé, documentation classifiée : aucun détail ni visuel du programme n'est publié ici.",
       highlights: ["Conception et intégration de scénarios d'entraînement temps réel, sous exigences fonctionnelles strictes et validation formelle", "Développement en architecture modulaire", "Correction de bugs complexes sur des comportements simulés difficiles à reproduire", "Travail direct avec ingénieurs systèmes et pilotes, en environnement défense réglementé"],
-      sections: [],
+      sections: [
+        { title: "Le contexte", text: "Simulateurs aéronautiques d'entraînement basés sur Inscape VTS, pour un programme de défense nationale. Un environnement réglementé : exigences fonctionnelles strictes, validation formelle, documentation classifiée." },
+        { title: "Mon rôle", text: "Concevoir et intégrer des scénarios d'entraînement qui s'exécutent en temps réel, dans une architecture modulaire, et corriger des bugs complexes sur des comportements simulés difficiles à reproduire." },
+        { title: "Avec les utilisateurs du simulateur", text: "Travail direct avec des ingénieurs systèmes et des pilotes, pour transformer un besoin opérationnel en scénario qui fonctionne et qui passe la validation." },
+        { title: "Pourquoi cette page reste courte", text: "Le programme est classifié : je n'en publie ni détail ni visuel, et l'illustration de cette page est générique. J'en parle volontiers de vive voix, dans les limites de ce qui est autorisé." },
+      ],
     },
     "time-restore": {
       title: "Time Restore", subtitle: "Projet personnel — UE4 → UE5", type: "RPG", role: "Développeur / Game Designer",
@@ -264,9 +271,11 @@ export const projectsData = {
         "Three false alarms from the harness itself, diagnosed and fixed on the test side: calibrating properties against the code's real contract (a vertex 1.6 µm from a 2.7 m edge is not on it) is a good share of the work — a harness that cries wolf is abandoned in three days",
       ],
       sections: [
-        { title: "Three blockout modes", text: "Box mode produces a rectangular room from dimensions. Free-draw mode lets you click an outline in the Scene view: once closed, the height follows the mouse until the confirming click, Ctrl snaps to the grid, and dragging below the drawing plane extrudes downwards. Cut mode pierces an opening — door, window, floor hatch — directly on the hovered surface. Cutting accepts any flat extruded outline, including a box that came from elsewhere; a cylinder or a sphere is refused with the reason, because reconstruction would replace them with a box." },
         { title: "Properties, not fixed results", text: "Triangulation and 3D assembly depend on no Unity API — around a hundred lines of stand-ins for Vector2, Vector3 and Mathf are enough. The harness therefore compiles the project's own files, not copies, and exercises them outside the editor. What is checked is not a list of expected results but properties that must hold for any input. Randomly generated cases are complemented by pinned regressions — each is a defect that genuinely existed, and each was watched failing on the version that carried it." },
         { title: "Measuring what the verification is worth", text: "A passing test battery says nothing about what it would catch. The mutation harness injects 21 plausible defects, one at a time, and counts how many the battery catches: 19 out of 21. The two survivors hit code nothing depends on. The figure started at 67% — the properties added since exist because an injected defect slipped through unseen, not because they seemed like a good idea." },
+        { title: "What the bench found", text: "In code that compiled and worked on screen: a fixed threshold where a relative one was needed, which changed the same wall's mesh depending on where it sat in the level; an extrapolation placing a vertex inside a neighbouring hole, one case in 1,500; a 15 µm crack between a wall's face and its edge; and Unity's cylinder accepted as a box — no out-of-engine test could see that one, it took querying the live editor. Each real defect became a frozen regression case, and each was seen failing on the version that had it." },
+        { title: "Running the checks", text: "Two commands: GeometryTests (about ten seconds, properties checked over thousands of cases) and MutationTests (about four minutes, faults injected one at a time). Both return 0 when everything passes and 1 otherwise, so they can block a commit or run in continuous integration. The code and both benches are public on GitHub." },
+        { title: "Three blockout modes", text: "Box mode produces a rectangular room from dimensions. Free-draw mode lets you click an outline in the Scene view: once closed, the height follows the mouse until the confirming click, Ctrl snaps to the grid, and dragging below the drawing plane extrudes downwards. Cut mode pierces an opening — door, window, floor hatch — directly on the hovered surface. Cutting accepts any flat extruded outline, including a box that came from elsewhere; a cylinder or a sphere is refused with the reason, because reconstruction would replace them with a box." },
       ],
     },
     "horror-ue5": {
@@ -338,7 +347,12 @@ export const projectsData = {
       title: "Aeronautical Simulator", subtitle: "CS Group — Defence", type: "Defence Simulation", role: "Embedded Systems Technician",
       description: "Inscape VTS aeronautical simulators for a national defence programme, 14 months at CS Group. Real-time training scenarios under strict functional requirements and formal validation, working directly with systems engineers and pilots. Regulated defence environment, classified documentation: no programme details or visuals are published here.",
       highlights: ["Designed and integrated real-time training scenarios under strict functional requirements and formal validation", "Modular software architecture", "Fixed complex bugs in hard-to-reproduce simulated behaviour", "Worked directly with systems engineers and pilots in a regulated defence environment"],
-      sections: [],
+      sections: [
+        { title: "Context", text: "Inscape VTS-based aeronautical training simulators for a national defence programme. A regulated environment: strict functional requirements, formal validation, classified documentation." },
+        { title: "My role", text: "Designing and integrating training scenarios that run in real time, within a modular architecture, and fixing complex bugs in hard-to-reproduce simulated behaviour." },
+        { title: "Working with the simulator's users", text: "Direct work with systems engineers and pilots, turning an operational need into a scenario that works and passes validation." },
+        { title: "Why this page is short", text: "The programme is classified: I publish no details or visuals of it, and the illustration on this page is generic. I'm happy to talk about it in person, within what is permitted." },
+      ],
     },
     "time-restore": {
       title: "Time Restore", subtitle: "Personal project — UE4 → UE5", type: "RPG", role: "Developer / Game Designer",
@@ -509,6 +523,7 @@ const translations = {
     detail_highlights: "// Ce que j'ai développé",
     detail_tech: "Technologies",
     detail_itch: "↗ Télécharger sur itch.io",
+    detail_github: "↗ Voir le code sur GitHub",
     detail_all: "← Tous les projets",
     detail_prev: "← Projet précédent",
     detail_next: "Projet suivant →",
@@ -639,6 +654,7 @@ const translations = {
     detail_highlights: "// What I built",
     detail_tech: "Technologies",
     detail_itch: "↗ Download on itch.io",
+    detail_github: "↗ View the code on GitHub",
     detail_all: "← All projects",
     detail_prev: "← Previous project",
     detail_next: "Next project →",

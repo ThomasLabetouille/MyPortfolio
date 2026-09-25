@@ -24,7 +24,7 @@ export default function Projects() {
         style={{ "--card-color": p.color }}
       >
         {/* Image */}
-        <div className="project-img">
+        <Link to={`/project/${p.id}`} className="project-img" aria-label={p.title}>
           {p.images && p.images.length > 0
             ? <img src={p.images[0]} alt={p.title} loading="lazy" />
             : p.id === "claude-ue5"
@@ -51,7 +51,7 @@ export default function Projects() {
               {p.status === "completed" ? t("status_completed") : t("status_ongoing")}
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Body */}
         <div className="project-body">
@@ -60,25 +60,25 @@ export default function Projects() {
             {pTr.role && <span className="project-role-tag">{pTr.role}</span>}
             {pTr.type && <span className="project-type-tag">/ {pTr.type}</span>}
           </div>
-          <div className="project-title">{pTr.title}</div>
+          <Link to={`/project/${p.id}`} className="project-title">{pTr.title}</Link>
           <div className="project-subtitle">{pTr.subtitle}</div>
           <div className="project-desc">{pTr.description}</div>
 
           <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap", marginBottom:"1rem" }}>
+            <Link
+              to={`/project/${p.id}`}
+              className="project-expand-btn project-open-btn"
+            >
+              {t("proj_see")}
+            </Link>
             <button
               className="project-expand-btn"
               onClick={() => setExpanded(expanded === p.id ? null : p.id)}
             >
               {expanded === p.id ? t("proj_details_close") : t("proj_details")}
             </button>
-            {(p.gallery?.length > 0 || p.sections?.length > 0) && (
-              <Link
-                to={`/project/${p.id}`}
-                className="project-expand-btn"
-                style={{ borderColor: "var(--card-color)", color: "var(--card-color)" }}
-              >
-                {t("proj_see")}
-              </Link>
+            {p.githubUrl && (
+              <a className="project-expand-btn" href={p.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
             )}
           </div>
 
@@ -138,6 +138,7 @@ export default function Projects() {
 
         /* Image area */
         .project-img {
+          display: block;
           width: 100%; height: 220px; overflow: hidden;
           background: var(--bg3); position: relative;
         }
@@ -215,6 +216,7 @@ export default function Projects() {
           color: var(--card-color, var(--accent)); letter-spacing: .08em;
         }
         .project-title {
+          display: block; color: var(--text);
           font-size: 1.3rem; font-weight: 600; margin-bottom: .2rem;
           letter-spacing: -.01em;
         }
@@ -235,6 +237,8 @@ export default function Projects() {
           font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
           padding: .35rem .8rem; transition: all .2s; margin-bottom: 1rem;
         }
+        .project-open-btn { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+        .project-expand-btn.project-open-btn:hover { color: var(--bg); border-color: var(--accent); opacity: .88; }
         .project-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
 
         /* Expanded details */

@@ -94,6 +94,9 @@ export default function ProjectDetail() {
         /* Body */
         .detail-body { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; }
 
+        .detail-cover { width: 100%; max-height: 460px; object-fit: cover; display: block; border: 1px solid var(--border); margin-bottom: 3rem; }
+        .detail-github { display: inline-block; margin: 1.2rem 0 2rem; padding: .6rem 1.2rem; border: 1px solid var(--accent); color: var(--accent); font-size: .85rem; letter-spacing: .04em; border-radius: 3px; }
+        .detail-github:hover { background: var(--accent); color: var(--bg); }
         /* Main gallery */
         .detail-gallery {
           display: grid;
@@ -272,6 +275,9 @@ export default function ProjectDetail() {
           <h1 className="detail-title">{pTr?.title ?? project.title}</h1>
           <div className="detail-subtitle">{pTr?.subtitle ?? project.subtitle}</div>
           <p className="detail-desc">{pTr?.description ?? project.description}</p>
+          {project.githubUrl && (
+            <a className="detail-github" href={project.githubUrl} target="_blank" rel="noreferrer">{t("detail_github")}</a>
+          )}
           <div className="detail-meta-row">
             {pTr?.role && (
               <div className="detail-meta-item">
@@ -292,6 +298,11 @@ export default function ProjectDetail() {
 
         {/* Body */}
         <div className="detail-body">
+
+          {/* Cover when there is no gallery */}
+          {!(project.gallery?.length > 0) && project.images?.[0] && (
+            <img className="detail-cover" src={project.images[0]} alt={pTr?.title ?? project.title} />
+          )}
 
           {/* Gallery */}
           {project.gallery && project.gallery.length > 0 && (
@@ -341,6 +352,11 @@ export default function ProjectDetail() {
 
           {/* CTA */}
           <div className="detail-cta">
+            {project.githubUrl && (
+              <a className="btn-primary" href={project.githubUrl} target="_blank" rel="noreferrer">
+                {t("detail_github")}
+              </a>
+            )}
             {project.itchUrl && (
               <a className="btn-primary" href={project.itchUrl} target="_blank" rel="noreferrer">
                 {t("detail_itch")}

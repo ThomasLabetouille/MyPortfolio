@@ -23,6 +23,7 @@ export const projects = [
   },
   {
     id: "level-design-tools",
+    githubUrl: "https://github.com/ThomasLabetouille/unity-room-builder",
     group: "engineering",
     featured: true,
     title: "Banc de test automatisé — outil 3D",
@@ -52,6 +53,7 @@ export const projects = [
   },
   {
     id: "claude-ue5",
+    githubUrl: "https://github.com/ThomasLabetouille/ue5-agent-verified-levelgen",
     group: "engineering",
     title: "Pilotage & vérification d'un moteur 3D",
     subtitle: "C++, Python, CI — plugin Unreal Engine 5 piloté par IA, 117 tests — Projet personnel",
