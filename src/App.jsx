@@ -4,7 +4,6 @@ import { LangProvider } from "./context/LangContext";
 import Cursor from "./components/Cursor";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import ProjectVideoCarousel from "./components/ProjectVideoCarousel";
 import About from "./components/About";
 import Experience from "./components/Experience";
 import Projects from "./components/Projects";
@@ -16,11 +15,10 @@ function Home() {
   return (
     <>
       <Hero />
-      <ProjectVideoCarousel />
-      <About />
       <Experience />
       <Projects />
       <Skills />
+      <About />
       <Contact />
     </>
   );

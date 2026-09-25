@@ -63,6 +63,9 @@ export default function Cursor() {
           transition: width .2s, height .2s, top .2s, left .2s, border-color .2s, background .2s;
           opacity: 0.7;
         }
+        @media (hover: none), (pointer: coarse) {
+          .cursor-dot, .cursor-ring { display: none; }
+        }
         .cursor-ring.cursor-hover {
           width: 56px; height: 56px;
           top: -28px; left: -28px;

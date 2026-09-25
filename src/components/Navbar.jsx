@@ -12,10 +12,10 @@ export default function Navbar() {
   const { t } = useLang();
 
   const links = [
-    { href: "#about",      label: t("nav_about") },
     { href: "#experience", label: t("nav_experience") },
     { href: "#projects",   label: t("nav_projects") },
     { href: "#skills",     label: t("nav_skills") },
+    { href: "#about",      label: t("nav_about") },
     { href: "#contact",    label: t("nav_contact") },
   ];
 

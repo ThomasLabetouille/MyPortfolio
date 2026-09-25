@@ -17,6 +17,91 @@ export default function Projects() {
     ? projects
     : projects.filter((p) => p.category === active || p.tags.includes(active));
 
+  const renderCard = (p) => (
+      <div
+        className={`project-card${p.featured ? " featured" : ""}`}
+        key={p.id}
+        style={{ "--card-color": p.color }}
+      >
+        {/* Image */}
+        <div className="project-img">
+          {p.images && p.images.length > 0
+            ? <img src={p.images[0]} alt={p.title} loading="lazy" />
+            : p.id === "claude-ue5"
+              ? (
+                <div className="project-img-placeholder" style={{ background: "var(--bg3)", flexDirection:"column", gap:"1rem" }}>
+                  <div style={{ fontFamily:"var(--font-mono)", fontSize:"1.1rem", color:"var(--accent)", letterSpacing:".05em" }}>MCP · C++ · Python</div>
+                  <div style={{ fontFamily:"var(--font-mono)", fontSize:".65rem", color:"var(--text3)", letterSpacing:".15em", textAlign:"center", lineHeight:1.8 }}>
+                    Claude AI ←→ UE5<br/>Remote Execution API<br/>Behavior Trees · AI Perception
+                  </div>
+                </div>
+              )
+            : <div className="project-img-placeholder"><span>{t("proj_placeholder")}</span></div>
+          }
+          {p.featured && (
+            <div className="project-featured-label">{t("proj_featured")}</div>
+          )}
+          <div className="project-img-badges">
+            <span className="project-engine-badge">{p.engine}</span>
+            {p.id === "claude-ue5" && (
+              <span className="project-engine-badge" style={{ background: "#7b61ff" }}>Claude AI</span>
+            )}
+            <span className="project-year-badge">{p.year}</span>
+            <span className={`project-status-badge project-status-${p.status}`}>
+              {p.status === "completed" ? t("status_completed") : t("status_ongoing")}
+            </span>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="project-body">
+          {(() => { const pTr = tProject(p.id); return (<>
+          <div className="project-meta">
+            {pTr.role && <span className="project-role-tag">{pTr.role}</span>}
+            {pTr.type && <span className="project-type-tag">/ {pTr.type}</span>}
+          </div>
+          <div className="project-title">{pTr.title}</div>
+          <div className="project-subtitle">{pTr.subtitle}</div>
+          <div className="project-desc">{pTr.description}</div>
+
+          <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap", marginBottom:"1rem" }}>
+            <button
+              className="project-expand-btn"
+              onClick={() => setExpanded(expanded === p.id ? null : p.id)}
+            >
+              {expanded === p.id ? t("proj_details_close") : t("proj_details")}
+            </button>
+            {(p.gallery?.length > 0 || p.sections?.length > 0) && (
+              <Link
+                to={`/project/${p.id}`}
+                className="project-expand-btn"
+                style={{ borderColor: "var(--card-color)", color: "var(--card-color)" }}
+              >
+                {t("proj_see")}
+              </Link>
+            )}
+          </div>
+
+          {expanded === p.id && (
+            <div className="project-details">
+              <ul className="project-highlights">
+                {pTr.highlights.map((h, i) => <li key={i}>{h}</li>)}
+              </ul>
+              <div className="project-tags">
+                {p.tech.map((tech) => <span className="project-tag" key={tech}>{tech}</span>)}
+              </div>
+              {p.itchUrl && (
+                <a className="project-itch" href={p.itchUrl} target="_blank" rel="noreferrer">
+                  {t("detail_itch")}
+                </a>
+              )}
+            </div>
+          )}
+          </>); })()}
+        </div>
+      </div>
+  );
+
   return (
     <>
       <style>{`
@@ -183,8 +268,16 @@ export default function Projects() {
           background: var(--card-color, var(--accent)); color: var(--bg);
         }
 
+        .projects-group + .projects-group { margin-top: 4.5rem; }
+        .projects-group-title {
+          font-size: 1.15rem; font-weight: 700; letter-spacing: -.01em;
+          margin-bottom: 1.5rem; padding-bottom: .8rem;
+          border-bottom: 1px solid var(--border); color: var(--text);
+        }
         @media (max-width: 768px) {
+          .projects { padding: 4.5rem 1rem; }
           .projects-grid { grid-template-columns: 1fr; }
+          .project-card.featured .project-img { height: 190px; }
           .project-img { height: 180px; }
         }
       `}</style>
@@ -200,92 +293,16 @@ export default function Projects() {
             <button key={f.key} className={`filter-btn${active===f.key?" active":""}`} onClick={()=>setActive(f.key)}>{f.label}</button>
           ))}
         </div>
-        <div className="projects-grid">
-          {filtered.map((p) => (
-            <div
-              className={`project-card`}
-              key={p.id}
-              style={{ "--card-color": p.color }}
-            >
-              {/* Image */}
-              <div className="project-img">
-                {p.images && p.images.length > 0
-                  ? <img src={p.images[0]} alt={p.title} loading="lazy" />
-                  : p.id === "claude-ue5"
-                    ? (
-                      <div className="project-img-placeholder" style={{ background: "var(--bg3)", flexDirection:"column", gap:"1rem" }}>
-                        <div style={{ fontFamily:"var(--font-mono)", fontSize:"1.1rem", color:"var(--accent)", letterSpacing:".05em" }}>MCP · C++ · Python</div>
-                        <div style={{ fontFamily:"var(--font-mono)", fontSize:".65rem", color:"var(--text3)", letterSpacing:".15em", textAlign:"center", lineHeight:1.8 }}>
-                          Claude AI ←→ UE5<br/>Remote Execution API<br/>Behavior Trees · AI Perception
-                        </div>
-                      </div>
-                    )
-                  : <div className="project-img-placeholder"><span>{t("proj_placeholder")}</span></div>
-                }
-                {p.id === "claude-ue5" && (
-                  <div className="project-featured-label">{t("proj_featured")}</div>
-                )}
-                <div className="project-img-badges">
-                  <span className="project-engine-badge">{p.engine}</span>
-                  {p.id === "claude-ue5" && (
-                    <span className="project-engine-badge" style={{ background: "#7b61ff" }}>Claude AI</span>
-                  )}
-                  <span className="project-year-badge">{p.year}</span>
-                  <span className={`project-status-badge project-status-${p.status}`}>
-                    {p.status === "completed" ? t("status_completed") : t("status_ongoing")}
-                  </span>
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="project-body">
-                {(() => { const pTr = tProject(p.id); return (<>
-                <div className="project-meta">
-                  {pTr.role && <span className="project-role-tag">{pTr.role}</span>}
-                  {pTr.type && <span className="project-type-tag">/ {pTr.type}</span>}
-                </div>
-                <div className="project-title">{pTr.title}</div>
-                <div className="project-subtitle">{pTr.subtitle}</div>
-                <div className="project-desc">{pTr.description}</div>
-
-                <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap", marginBottom:"1rem" }}>
-                  <button
-                    className="project-expand-btn"
-                    onClick={() => setExpanded(expanded === p.id ? null : p.id)}
-                  >
-                    {expanded === p.id ? t("proj_details_close") : t("proj_details")}
-                  </button>
-                  {(p.gallery?.length > 0 || p.sections?.length > 0) && (
-                    <Link
-                      to={`/project/${p.id}`}
-                      className="project-expand-btn"
-                      style={{ borderColor: "var(--card-color)", color: "var(--card-color)" }}
-                    >
-                      {t("proj_see")}
-                    </Link>
-                  )}
-                </div>
-
-                {expanded === p.id && (
-                  <div className="project-details">
-                    <ul className="project-highlights">
-                      {pTr.highlights.map((h, i) => <li key={i}>{h}</li>)}
-                    </ul>
-                    <div className="project-tags">
-                      {p.tech.map((tech) => <span className="project-tag" key={tech}>{tech}</span>)}
-                    </div>
-                    {p.itchUrl && (
-                      <a className="project-itch" href={p.itchUrl} target="_blank" rel="noreferrer">
-                        {t("detail_itch")}
-                      </a>
-                    )}
-                  </div>
-                )}
-                </>); })()}
-              </div>
+        {active === "Tous" ? (
+          [["engineering", "proj_group_engineering"], ["games", "proj_group_games"]].map(([g, key]) => (
+            <div key={g} className="projects-group">
+              <h3 className="projects-group-title">{t(key)}</h3>
+              <div className="projects-grid">{filtered.filter((p) => p.group === g).map(renderCard)}</div>
             </div>
-          ))}
-        </div>
+          ))
+        ) : (
+          <div className="projects-grid">{filtered.map(renderCard)}</div>
+        )}
       </section>
     </>
   );

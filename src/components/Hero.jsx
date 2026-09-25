@@ -3,7 +3,7 @@ import { useLang } from "../context/LangContext";
 
 export default function Hero() {
   const gridRef = useRef(null);
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   useEffect(() => {
     const el = gridRef.current;
@@ -41,9 +41,23 @@ export default function Hero() {
         .hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .65rem; color: var(--text3); letter-spacing: .15em; text-transform: uppercase; }
         .hero-scroll-line { width: 1px; height: 50px; background: linear-gradient(var(--accent), transparent); animation: scrollLine 1.8s ease-in-out infinite; }
         @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
-        .hero-stats { display: flex; gap: 3rem; margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
-        .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); line-height: 1; }
-        .stat-label { font-family: var(--font-mono); font-size: .7rem; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-top: .3rem; }
+        .hero-stats { display: grid; grid-template-columns: repeat(4, auto); justify-content: start; gap: 2.5rem; margin-top: 3.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+        .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent); line-height: 1.1; white-space: nowrap; }
+        .stat-label { font-family: var(--font-mono); font-size: .68rem; color: var(--text2); letter-spacing: .08em; text-transform: uppercase; margin-top: .4rem; max-width: 190px; line-height: 1.5; }
+        @media (max-width: 900px) {
+          .hero-stats { grid-template-columns: 1fr 1fr; gap: 1.6rem 1.2rem; margin-top: 2.5rem; padding-top: 1.8rem; }
+          .stat-num { font-size: 1.25rem; white-space: normal; }
+        }
+        @media (max-width: 700px) {
+          .hero { min-height: auto; padding: 0 1rem 3rem; }
+          .hero-content { padding-top: 88px; }
+          .hero-scroll { display: none; }
+          .hero-name { font-size: clamp(2.6rem, 12vw, 3.4rem); }
+          .hero-title { font-size: .78rem; letter-spacing: .06em; margin-bottom: 1.1rem; }
+          .hero-title::before { flex-basis: 24px; }
+          .hero-desc { font-size: .9rem; line-height: 1.6; margin-bottom: 1.8rem; }
+          .hero-btns a { flex: 1 1 100%; text-align: center; }
+        }
       `}</style>
       <section className="hero" id="hero">
         <div className="hero-grid" ref={gridRef} />
@@ -56,15 +70,15 @@ export default function Hero() {
           <p className="hero-desc">{t("hero_desc").split("\n").map((l, i) => <span key={i}>{l}{i === 0 && <br/>}</span>)}</p>
           <div className="hero-btns">
             <a href="#projects" className="btn-primary" onClick={(e) => { e.preventDefault(); document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" }); }}>{t("hero_btn_projects")}</a>
-            <a href="#contact" className="btn-secondary" onClick={(e) => { e.preventDefault(); document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }); }}>{t("hero_btn_contact")}</a>
+            <a href={t("contact_cv_file")} download={`CV_Thomas_Labetouille_${lang.toUpperCase()}.pdf`} className="btn-secondary">{t("hero_btn_cv")}</a>
           </div>
           <div className="hero-stats">
-            <div><div className="stat-num">2+</div><div className="stat-label">{t("hero_stat1_label")}</div></div>
-            <div><div className="stat-num">UE5</div><div className="stat-label">& Unity</div></div>
-            <div><div className="stat-num">C++ / C#</div><div className="stat-label">{t("hero_stat3_label")}</div></div>
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n}><div className="stat-num">{t(`hero_stat${n}_num`)}</div><div className="stat-label">{t(`hero_stat${n}_label`)}</div></div>
+            ))}
           </div>
         </div>
-        <div className="hero-scroll"><div className="hero-scroll-line" /><span>Scroll</span></div>
+        
       </section>
     </>
   );

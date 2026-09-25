@@ -13,7 +13,7 @@ export default function About() {
       <style>{`
         .about { padding: 7rem 2rem; max-width: 1100px; margin: 0 auto; }
         .section-label { font-family: var(--font-mono); font-size: .7rem; color: var(--accent); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .8rem; }
-        .section-label::before { content: '//'; color: var(--text3); }
+        .about .section-label::before { content: '//'; color: var(--text3); }
         .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 3.5rem; }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
         .about-text p { font-family: var(--font-mono); font-size: .88rem; color: var(--text2); line-height: 1.9; font-weight: 300; margin-bottom: 1.5rem; }
