@@ -147,7 +147,7 @@ export default function ProjectVideoCarousel() {
           cursor: pointer; z-index: 2; transition: border-color .2s, color .2s, background .2s;
           font-size: 1.2rem; user-select: none;
         }
-        .vcarousel-arrow:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,0.12); }
+        .vcarousel-arrow:hover { border-color: var(--accent); color: var(--accent); background: rgba(234,214,175,0.12); }
         .vcarousel-arrow.prev { left: 1rem; }
         .vcarousel-arrow.next { right: 1rem; }
         .vcarousel-controls {
@@ -182,7 +182,7 @@ export default function ProjectVideoCarousel() {
         .vcarousel-bar-handle {
           position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%;
           background: var(--accent); transform: translate(-50%, -50%);
-          box-shadow: 0 0 0 3px rgba(0,212,255,0.25); pointer-events: none;
+          box-shadow: 0 0 0 3px rgba(234,214,175,0.25); pointer-events: none;
         }
         .vcarousel-dots {
           display: flex; justify-content: center; gap: .5rem;

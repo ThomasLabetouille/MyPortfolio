@@ -440,7 +440,7 @@ const translations = {
         type: "CDI",
         period: "Sept. 2024 — Nov. 2025",
         domain: "Simulation / Défense",
-        color: "#7b61ff",
+        color: "#ead6af",
         desc: "Simulateurs aéronautiques Inscape VTS pour un programme de défense nationale. Conception et intégration de scénarios d'entraînement temps réel sous exigences fonctionnelles strictes et validation formelle ; correction de bugs complexes sur des comportements simulés difficiles à reproduire ; travail direct avec ingénieurs systèmes et pilotes.",
       },
       {
@@ -449,7 +449,7 @@ const translations = {
         type: "Freelance",
         period: "Déc. 2023 — Sept. 2024",
         domain: "Jeu Vidéo / UE5",
-        color: "#00d4ff",
+        color: "#ead6af",
         desc: "Mission freelance sur un jeu d'action-aventure UE5. Systèmes gameplay complets : personnage, natation, météo, map interactive.",
       },
       {
@@ -458,7 +458,7 @@ const translations = {
         type: "Formation",
         period: "2020 — 2023",
         domain: "RNCP Niveau 6",
-        color: "#ff4d00",
+        color: "#ead6af",
         desc: "Spécialisation C# / Unity / Game & Level Design. Certification RNCP Niveau 6.",
       },
     ],
@@ -570,7 +570,7 @@ const translations = {
         type: "Permanent",
         period: "Sep. 2024 — Nov. 2025",
         domain: "Simulation / Defence",
-        color: "#7b61ff",
+        color: "#ead6af",
         desc: "Inscape VTS aeronautical simulators for a national defence programme. Designed and integrated real-time training scenarios under strict functional requirements and formal validation; fixed complex bugs in hard-to-reproduce simulated behaviour; worked directly with systems engineers and pilots.",
       },
       {
@@ -579,7 +579,7 @@ const translations = {
         type: "Freelance",
         period: "Dec. 2023 — Sep. 2024",
         domain: "Game Dev / UE5",
-        color: "#00d4ff",
+        color: "#ead6af",
         desc: "Freelance mission on a UE5 action-adventure game. Full gameplay systems: character, swimming, weather, interactive map.",
       },
       {
@@ -588,7 +588,7 @@ const translations = {
         type: "Education",
         period: "2020 — 2023",
         domain: "RNCP Level 6",
-        color: "#ff4d00",
+        color: "#ead6af",
         desc: "Specialisation in C# / Unity / Game & Level Design. RNCP Level 6 certification.",
       },
     ],

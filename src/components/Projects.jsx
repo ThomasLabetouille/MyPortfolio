@@ -44,7 +44,7 @@ export default function Projects() {
           <div className="project-img-badges">
             <span className="project-engine-badge">{p.engine}</span>
             {p.id === "claude-ue5" && (
-              <span className="project-engine-badge" style={{ background: "#7b61ff" }}>Claude AI</span>
+              <span className="project-engine-badge" style={{ background: "#ead6af" }}>Claude AI</span>
             )}
             <span className="project-year-badge">{p.year}</span>
             <span className={`project-status-badge project-status-${p.status}`}>
@@ -115,7 +115,7 @@ export default function Projects() {
         }
         .filter-btn.active, .filter-btn:hover {
           border-color: var(--accent); color: var(--accent);
-          background: rgba(0,212,255,0.05);
+          background: rgba(234,214,175,0.05);
         }
         .projects-grid {
           display: grid;
@@ -161,15 +161,15 @@ export default function Projects() {
         /* Featured card */
         .project-card.featured {
           grid-column: 1 / -1;
-          border-color: rgba(0,212,255,0.3);
-          background: linear-gradient(135deg, var(--surface) 0%, rgba(0,212,255,0.04) 100%);
+          border-color: rgba(234,214,175,0.3);
+          background: linear-gradient(135deg, var(--surface) 0%, rgba(234,214,175,0.04) 100%);
         }
         .project-card.featured .project-img { height: 280px; }
         .project-featured-label {
           position: absolute; top: .75rem; right: .75rem;
           font-family: var(--font-mono); font-size: .6rem;
           letter-spacing: .12em; text-transform: uppercase;
-          background: rgba(123,97,255,0.9); color: #fff;
+          background: rgba(83,60,54,0.95); color: #fff;
           padding: .25rem .7rem; backdrop-filter: blur(4px);
         }
 
@@ -195,8 +195,8 @@ export default function Projects() {
           letter-spacing: .08em; padding: .2rem .55rem;
           backdrop-filter: blur(4px); font-weight: 700;
         }
-        .project-status-completed { color: #0a2e1a; background: rgba(46,204,113,0.92); }
-        .project-status-ongoing { color: #2a1800; background: rgba(255,176,32,0.92); }
+        .project-status-completed { color: #262626; background: rgba(234,214,175,0.92); }
+        .project-status-ongoing { color: #262626; background: rgba(190,190,190,0.92); }
 
         /* Card body */
         .project-body { padding: 1.5rem; }
@@ -215,15 +215,15 @@ export default function Projects() {
           color: var(--card-color, var(--accent)); letter-spacing: .08em;
         }
         .project-title {
-          font-size: 1.3rem; font-weight: 800; margin-bottom: .2rem;
+          font-size: 1.3rem; font-weight: 600; margin-bottom: .2rem;
           letter-spacing: -.01em;
         }
         .project-subtitle {
-          font-family: var(--font-mono); font-size: .72rem;
+          font-family: var(--font-mono); font-size: .8rem;
           color: var(--text3); margin-bottom: .85rem;
         }
         .project-desc {
-          font-family: var(--font-mono); font-size: .78rem;
+          font-family: var(--font-mono); font-size: .92rem;
           color: var(--text2); line-height: 1.75; font-weight: 300;
           margin-bottom: 1.2rem;
         }
@@ -241,7 +241,7 @@ export default function Projects() {
         .project-details { border-top: 1px solid var(--border); padding-top: 1rem; }
         .project-highlights { margin-bottom: 1rem; }
         .project-highlights li {
-          font-family: var(--font-mono); font-size: .72rem;
+          font-family: var(--font-mono); font-size: .86rem;
           color: var(--text2); line-height: 1.7;
           padding-left: 1rem; position: relative;
           margin-bottom: .3rem; list-style: none;
@@ -285,7 +285,7 @@ export default function Projects() {
         <div className="section-label" style={{ fontFamily:"var(--font-mono)",fontSize:".7rem",color:"var(--accent)",letterSpacing:".2em",textTransform:"uppercase",marginBottom:"1rem",display:"flex",alignItems:"center",gap:".8rem" }}>
           <span style={{ color:"var(--text3)" }}>//</span> {t("proj_label")}
         </div>
-        <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:800,letterSpacing:"-.02em",lineHeight:1.1,marginBottom:"3rem" }}>
+        <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:600,letterSpacing:"-.01em",lineHeight:1.1,marginBottom:"3rem" }}>
           {t("proj_title").split("\n").map((l,i)=><span key={i}>{l}{i===0&&<br/>}</span>)}
         </h2>
         <div className="filter-bar">

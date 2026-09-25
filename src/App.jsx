@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import "./index.css";
 import { LangProvider } from "./context/LangContext";
-import Cursor from "./components/Cursor";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -27,7 +26,6 @@ function Home() {
 export default function App() {
   return (
     <LangProvider>
-      <Cursor />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

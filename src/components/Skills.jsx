@@ -21,7 +21,7 @@ export default function Skills() {
           <div className="section-label" style={{ fontFamily:"var(--font-mono)",fontSize:".7rem",color:"var(--accent)",letterSpacing:".2em",textTransform:"uppercase",marginBottom:"1rem",display:"flex",alignItems:"center",gap:".8rem" }}>
             <span style={{ color:"var(--text3)" }}>//</span> {t("skills_label")}
           </div>
-          <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:800,letterSpacing:"-.02em",lineHeight:1.1 }}>
+          <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:600,letterSpacing:"-.01em",lineHeight:1.1 }}>
             {t("skills_title").split("\n").map((l,i)=><span key={i}>{l}{i===0&&<br/>}</span>)}
           </h2>
           <div className="skills-grid">

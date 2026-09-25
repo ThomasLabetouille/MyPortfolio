@@ -3,10 +3,10 @@ import { useLang } from "../context/LangContext";
 export default function About() {
   const { t } = useLang();
   const cards = [
-    { label: t("about_card1_label"), val: t("about_card1_val"), sub: t("about_card1_sub"), color: "#00d4ff" },
-    { label: t("about_card2_label"), val: t("about_card2_val"), sub: t("about_card2_sub"), color: "#ff4d00" },
-    { label: t("about_card3_label"), val: t("about_card3_val"), sub: t("about_card3_sub"), color: "#7b61ff" },
-    { label: t("about_card4_label"), val: t("about_card4_val"), sub: t("about_card4_sub"), color: "#00d4ff" },
+    { label: t("about_card1_label"), val: t("about_card1_val"), sub: t("about_card1_sub"), color: "#ead6af" },
+    { label: t("about_card2_label"), val: t("about_card2_val"), sub: t("about_card2_sub"), color: "#ead6af" },
+    { label: t("about_card3_label"), val: t("about_card3_val"), sub: t("about_card3_sub"), color: "#ead6af" },
+    { label: t("about_card4_label"), val: t("about_card4_val"), sub: t("about_card4_sub"), color: "#ead6af" },
   ];
   return (
     <>
@@ -14,9 +14,9 @@ export default function About() {
         .about { padding: 7rem 2rem; max-width: 1100px; margin: 0 auto; }
         .section-label { font-family: var(--font-mono); font-size: .7rem; color: var(--accent); letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: .8rem; }
         .about .section-label::before { content: '//'; color: var(--text3); }
-        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 3.5rem; }
+        .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; letter-spacing: -.01em; line-height: 1.1; margin-bottom: 3.5rem; }
         .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
-        .about-text p { font-family: var(--font-mono); font-size: .88rem; color: var(--text2); line-height: 1.9; font-weight: 300; margin-bottom: 1.5rem; }
+        .about-text p { font-family: var(--font-mono); font-size: .98rem; color: var(--text2); line-height: 1.9; font-weight: 300; margin-bottom: 1.5rem; }
         .about-text p strong { color: var(--text); font-weight: 500; }
         .about-cards { display: flex; flex-direction: column; gap: 1rem; }
         .about-card { padding: 1.5rem; border: 1px solid var(--border); background: var(--surface); position: relative; overflow: hidden; transition: border-color .2s; }

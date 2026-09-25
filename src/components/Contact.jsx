@@ -5,17 +5,17 @@ export default function Contact() {
   const cvFileName = `CV_Thomas_Labetouille_${lang.toUpperCase()}.pdf`;
 
   const links = [
-    { label: t("contact_email_label"), value: "thomas.labetouille@gmail.com", href: "mailto:thomas.labetouille@gmail.com", icon: "✉", color: "#00d4ff" },
-    { label: "LinkedIn", value: "thomas-labetouille", href: "https://www.linkedin.com/in/thomas-labetouille-294b39212/", icon: "in", color: "#7b61ff" },
+    { label: t("contact_email_label"), value: "thomas.labetouille@gmail.com", href: "mailto:thomas.labetouille@gmail.com", icon: "✉", color: "#ead6af" },
+    { label: "LinkedIn", value: "thomas-labetouille", href: "https://www.linkedin.com/in/thomas-labetouille-294b39212/", icon: "in", color: "#ead6af" },
     { label: t("contact_github_label"), value: t("contact_github_value"), href: "https://github.com/ThomasLabetouille", icon: "gh", color: "#8b949e" },
-    { label: t("contact_cv_label"), value: t("contact_cv_value"), href: t("contact_cv_file"), icon: "↓", color: "#ff4d00", download: true },
+    { label: t("contact_cv_label"), value: t("contact_cv_value"), href: t("contact_cv_file"), icon: "↓", color: "#ead6af", download: true },
   ];
 
   return (
     <>
       <style>{`
         .contact { padding: 7rem 2rem; max-width: 900px; margin: 0 auto; text-align: center; }
-        .contact-intro { font-family: var(--font-mono); font-size: .88rem; color: var(--text2); line-height: 1.8; max-width: 520px; margin: 1.5rem auto 4rem; font-weight: 300; }
+        .contact-intro { font-family: var(--font-mono); font-size: .98rem; color: var(--text2); line-height: 1.8; max-width: 520px; margin: 1.5rem auto 4rem; font-weight: 300; }
         .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
         .contact-link { display: flex; align-items: center; gap: 1rem; border: 1px solid var(--border); background: var(--surface); padding: 1.5rem 2rem; min-width: 260px; text-align: left; transition: border-color .2s, transform .2s; position: relative; overflow: hidden; }
         .contact-link::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--link-color, var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
@@ -31,7 +31,7 @@ export default function Contact() {
         <div className="section-label" style={{ fontFamily:"var(--font-mono)",fontSize:".7rem",color:"var(--accent)",letterSpacing:".2em",textTransform:"uppercase",marginBottom:"1rem",display:"flex",alignItems:"center",justifyContent:"center",gap:".8rem" }}>
           <span style={{ color:"var(--text3)" }}>//</span> {t("contact_label")}
         </div>
-        <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:800,letterSpacing:"-.02em",lineHeight:1.1 }}>
+        <h2 style={{ fontSize:"clamp(2rem,4vw,3rem)",fontWeight:600,letterSpacing:"-.01em",lineHeight:1.1 }}>
           {t("contact_title").split("\n").map((l,i)=><span key={i}>{l}{i===0&&<br/>}</span>)}
         </h2>
         <p className="contact-intro">

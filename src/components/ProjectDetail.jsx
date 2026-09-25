@@ -63,11 +63,11 @@ export default function ProjectDetail() {
         .detail-badge-year {
           border: 1px solid var(--border); color: var(--text3);
         }
-        .detail-badge-completed { background: rgba(46,204,113,0.92); color: #0a2e1a; font-weight: 700; }
-        .detail-badge-ongoing { background: rgba(255,176,32,0.92); color: #2a1800; font-weight: 700; }
+        .detail-badge-completed { background: rgba(234,214,175,0.92); color: #262626; font-weight: 700; }
+        .detail-badge-ongoing { background: rgba(190,190,190,0.92); color: #262626; font-weight: 700; }
         .detail-title {
-          font-size: clamp(2.5rem, 6vw, 5rem);
-          font-weight: 800; letter-spacing: -.03em; line-height: .95;
+          font-size: clamp(2rem, 4.5vw, 3.2rem);
+          font-weight: 600; letter-spacing: -.01em; line-height: 1.1;
           margin-bottom: .6rem;
         }
         .detail-subtitle {
@@ -75,7 +75,7 @@ export default function ProjectDetail() {
           color: var(--project-color, var(--accent)); margin-bottom: 1.5rem;
         }
         .detail-desc {
-          font-family: var(--font-mono); font-size: .88rem;
+          font-family: var(--font-mono); font-size: 1rem;
           color: var(--text2); line-height: 1.8; max-width: 680px;
           font-weight: 300;
         }
@@ -126,7 +126,7 @@ export default function ProjectDetail() {
         /* Sections */
         .detail-section { margin-bottom: 4rem; }
         .detail-section-title {
-          font-size: 1.3rem; font-weight: 800; margin-bottom: .5rem;
+          font-size: 1.3rem; font-weight: 600; margin-bottom: .5rem;
           display: flex; align-items: center; gap: .8rem;
         }
         .detail-section-title::before {
@@ -135,7 +135,7 @@ export default function ProjectDetail() {
           display: block; flex-shrink: 0;
         }
         .detail-section-text {
-          font-family: var(--font-mono); font-size: .82rem;
+          font-family: var(--font-mono); font-size: .96rem;
           color: var(--text2); line-height: 1.8; font-weight: 300;
           max-width: 680px; margin-bottom: 1.5rem;
         }
@@ -162,7 +162,7 @@ export default function ProjectDetail() {
         }
         .detail-highlights ul { list-style: none; }
         .detail-highlights li {
-          font-family: var(--font-mono); font-size: .82rem;
+          font-family: var(--font-mono); font-size: .94rem;
           color: var(--text2); line-height: 1.7;
           padding: .5rem 0 .5rem 1.2rem; position: relative;
           border-bottom: 1px solid var(--border);
@@ -201,7 +201,7 @@ export default function ProjectDetail() {
           transition: transform .15s, box-shadow .15s; cursor: pointer;
           clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.35); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(234,214,175,0.35); }
         .btn-outline {
           background: transparent; color: var(--text);
           border: 1px solid var(--border2); padding: .85rem 2rem;

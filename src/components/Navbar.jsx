@@ -43,19 +43,14 @@ export default function Navbar() {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
           padding: 0 2rem; height: 64px;
           display: flex; align-items: center; justify-content: space-between;
-          transition: background .3s, border-bottom .3s;
-          border-bottom: 1px solid transparent;
+          background: #533c36;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.35);
         }
-        .nav.scrolled {
-          background: rgba(8,10,15,0.92);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid var(--border);
-        }
-        .nav-logo { font-family: var(--font-mono); font-size: .85rem; color: var(--accent); letter-spacing: .08em; cursor: pointer; }
+        .nav-logo { font-family: var(--font-display); font-size: .95rem; font-weight: 600; color: #fff; letter-spacing: .08em; cursor: pointer; }
         .nav-logo span { color: var(--text2); }
         .nav-right { display: flex; align-items: center; gap: 1rem; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text2); transition: color .2s; position: relative; cursor: pointer; }
+        .nav-links a { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: #e6dccf; transition: color .2s; position: relative; cursor: pointer; }
         .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width .25s; }
         .nav-links a:hover { color: var(--text); }
         .nav-links a:hover::after { width: 100%; }
@@ -70,7 +65,7 @@ export default function Navbar() {
         }
       `}</style>
       <nav className={`nav${scrolled ? " scrolled" : ""}`}>
-        <div className="nav-logo" onClick={() => navigate("/")}>TL<span> /</span></div>
+        <div className="nav-logo" onClick={() => navigate("/")}>Thomas Labetouille</div>
         <div className="nav-right">
           <ul className="nav-links">
             {links.map((l) => (

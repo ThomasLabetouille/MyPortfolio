@@ -70,7 +70,7 @@ export default function Cursor() {
           width: 56px; height: 56px;
           top: -28px; left: -28px;
           border-color: var(--accent2);
-          background: rgba(0,212,255,0.06);
+          background: rgba(234,214,175,0.06);
         }
       `}</style>
       <div className="cursor-dot" ref={dot} />
