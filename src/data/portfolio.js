@@ -492,7 +492,7 @@ export const experience = [
   {
     role: "Technicien Systèmes Embarqués",
     company: "CS Group",
-    type: "CDI",
+    type: "CDD",
     period: "Sept. 2024 — Nov. 2025",
     domain: "Simulation / Défense",
     color: "#ead6af",

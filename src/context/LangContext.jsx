@@ -451,7 +451,7 @@ const translations = {
       {
         role: "Technicien Systèmes Embarqués",
         company: "CS Group",
-        type: "CDI",
+        type: "CDD",
         period: "Sept. 2024 — Nov. 2025",
         domain: "Simulation / Défense",
         color: "#ead6af",
@@ -582,7 +582,7 @@ const translations = {
       {
         role: "Embedded Systems Technician",
         company: "CS Group",
-        type: "Permanent",
+        type: "Fixed-term",
         period: "Sep. 2024 — Nov. 2025",
         domain: "Simulation / Defence",
         color: "#ead6af",
