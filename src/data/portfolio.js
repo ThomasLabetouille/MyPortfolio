@@ -1,5 +1,67 @@
 export const projects = [
   {
+    id: "assistant-ue5-local",
+    group: "engineering",
+    featured: true,
+    title: "Assistant IA local × UE5",
+    subtitle: "Assistant qui pilote Unreal Engine 5.8 en langage naturel, 100 % en local, et la boîte à outils du projet GameAnimationSample — Projet personnel",
+    engine: "UE5", category: "UE5",
+    tags: ["IA", "LLM local", "MCP", "RAG", "UE5", "C++", "Behavior Trees", "Tests"],
+    year: "2026",
+    color: "#ead6af",
+    role: "Développeur solo",
+    type: "Outil / IA locale",
+    status: "ongoing",
+    images: ["/images/assistant-ue5-local/cover.png"],
+    description: "Un assistant en langage naturel qui pilote Unreal Engine 5.8 en tournant entièrement sur ma carte graphique : pas de compte, pas d'abonnement, pas de connexion une fois installé. Son terrain est GameAnimationSample, autour duquel se sont construits quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
+    tech: ["Ollama", "Qwen2.5-Coder 14B", "MCP", "RAG", "Python", "Unreal Engine 5.8", "C++", "Slate", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
+    highlights: [
+      "Assistant UE5 local — Qwen2.5-Coder 14B via Ollama sur une RTX 4070, boucle d'agent et client MCP maison branchés sur les serveurs Unreal (dont celui du projet : PNJ, Behavior Trees, playtest). Aucune connexion Internet une fois installé",
+      "RAG construit depuis l'éditeur lui-même : 14 572 méthodes de l'API Python d'UE 5.8.2 et 3 931 assets du projet avec leurs vrais chemins, pour que le modèle cesse d'inventer des fonctions et des chemins qui n'existent pas. Conventions du projet injectées à chaque message, règles situationnelles servies seulement quand elles concernent la question",
+      "Garde-fous côté code plutôt que confiance dans le modèle : confirmation avant tout outil qui modifie le projet (une phrase en réponse redirige le modèle), appel d'outil écrit en texte exécuté seulement si l'outil existe vraiment, plafond de temps sur chaque appel MCP, journal des pannes, et impossibilité d'annoncer une réussite après un échec d'outil — 22 scripts de test avec un faux modèle, sans Unreal",
+      "BlockoutTools — outil de level design Slate pour UE5.8 : salle paramétrique, contour dessiné dans le viewport puis extrudé en direct (Ctrl contraint à angles droits, Ctrl+F ferme d'équerre), et découpe de portes et fenêtres sur la surface survolée. Le panneau est livré à quelqu'un qui ne programme pas, avec une notice d'installation en trois minutes et une ligne de statut qui explique toujours ce qui s'est passé",
+      "La géométrie de BlockoutTools ne dépend d'aucune API Unreal — une centaine de lignes de doublures suffisent à la compiler hors moteur. Le harnais exerce donc les fichiers du projet, pas des copies : 40 000 contours en une seconde, contre un rebuild du plugin (éditeur fermé, ~2 min) plus un aller-retour dans l'éditeur",
+      "Des propriétés plutôt que des résultats figés : aire triangulée égale à l'aire du contour moins les trous, couverture exacte, prisme recto-verso d'épaisseur juste, seuil de dégénérescence relatif à la taille du panneau, aucune T-jonction, déterminisme au bit près",
+      "Un bug du harnais lui-même, trouvé avant qu'il ne serve : le générateur de contours tirait des angles uniformes puis les triait, ce qui ne donne un polygone simple que si les sommets font le tour du centre — 57 contours auto-intersectants sur 2 000 étaient reprochés au code testé. Deux seuils ont aussi dû être recalés sur le contrat réel du code plutôt que sur une intuition",
+      "BTAuthoringKit — plugin C++ qui expose une API scriptable pour construire des Behavior Trees complets (Blackboard, composites, tasks, decorators, services, graphe visuel inclus) sans jamais ouvrir l'éditeur de graphe. Écrit parce que ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree",
+      "Injection d'input au même point qu'une vraie pression de touche : elle traverse l'Input Mapping Context, les modifiers et les triggers. Mesuré en PIE réelle, 1037 cm parcourus en 4 s. C'est ce qui rend la vérification comportementale possible sans jamais piloter l'écran — les deux voies naturelles étant mortes, chacune pour une raison distincte",
+      "Un test de non-régression qui pilote seul une session de jeu (~52 s de temps de jeu) et vérifie sept points par le comportement réel plutôt que par l'état des données : arbre lancé, controller unique, déplacement, animation d'assise, détection par perception réelle, rapprochement du joueur, aucun PNJ figé",
+      "IA de PNJ à tolérance et habituation : trois niveaux d'attention écrits dans le Blackboard à 10 Hz, une habituation qui resserre les seuils quand le joueur reste à distance et qui se perd si on brusque le sujet. Le choix d'abort du decorator a été tranché par la mesure, pas par la doctrine — 1308 cm de fuite avec l'un, 2060 cm avec l'autre, pour un critère à 1500",
+      "Assise contextuelle : le joueur peut s'asseoir partout où la géométrie le permet, à n'importe quelle hauteur — pas sur une liste de paliers. Le domaine est proportionnel à la taille du personnage, lue sur sa capsule de collision : un rebord de 80 cm est un siège pour un adulte et un mur pour un enfant",
+      "Combat à deux mains avec des règles d'input distinctes par touche, IA de combat en machine à états C++ réutilisée par héritage sur plusieurs archétypes, et un système de puzzle interrupteurs → porte générique, instancié par script pour n'importe quelle séquence plutôt que codé en dur",
+      "EvalHarness — dix scénarios qui notent le comportement de l'agent IA lui-même, chacun reproduisant avec des outils factices un piège réellement documenté dans l'historique du projet. L'agent reçoit une tâche ambiguë, un outil piégé et un outil fiable ; sa trajectoire est notée : a-t-il pris le bon outil, et sa conclusion est-elle fondée sur ce qu'il a vérifié plutôt que supposé",
+      "Le harnais tourne en gate CI à chaque modification des règles du projet, avec un seuil de passage qui fait échouer le build — et les règles injectées dans l'éval sont extraites du fichier de règles réel, donc une règle qui change là-bas est suivie sans duplication. Les points d'entrée qui comptent exposent des spans OpenTelemetry (durée, verdict, compteurs de régression) plutôt que des lignes de log à recompter à la main",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Un assistant qui tourne en local",
+        text: "Un modèle de 14 milliards de paramètres sur une carte de 12 Go ne raisonne pas comme un grand modèle en ligne : il se trompe plus, invente des API et annonce volontiers un succès. L'assistant compense par le code. Les vraies signatures et les vrais chemins d'assets lui sont mis sous les yeux avant qu'il réponde, une question n'est jamais traitée comme un ordre, chaque modification attend un accord, et une réponse qui déclare « le PNJ est prêt » juste après une erreur d'outil est interceptée. Sur des tâches cadrées — écrire un script Unreal, créer un PNJ, régler une scène — il est utilisable au quotidien, sans coût.",
+        images: []
+      },
+      {
+        title: "Une contrainte qui force l'outillage",
+        text: "Le projet interdit de piloter l'écran. Tout doit être scriptable — et c'est en s'y tenant qu'on découvre ce qui manque vraiment. Construire un Behavior Tree par script a buté sur une limite réelle : ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree, seulement des Blueprints classiques. BTAuthoringKit comble exactement ce trou. Vérifier un comportement en jeu a buté sur une autre limite : le pawn joueur ne consomme pas l'input Blueprint standard, et l'injection Enhanced Input directe est inatteignable depuis Python. La bibliothèque d'input scripté ne fait qu'une chose — obtenir l'instance qui manquait — et l'input entre ensuite au même point qu'une vraie touche.",
+        images: []
+      },
+      {
+        title: "Vérifier la géométrie hors moteur",
+        text: "Le noyau géométrique de l'outil de blockout ne référence aucun type Unreal. Une centaine de lignes de doublures suffisent donc à le compiler et à l'exercer en dehors de l'éditeur : une passe de 40 000 contours prend une seconde, là où un rebuild du plugin demande de fermer l'éditeur et deux minutes. Le harnais compile les fichiers du projet, pas des copies — si la géométrie se met à utiliser un type Unreal absent des doublures, il ne compile plus et on le sait immédiatement. Ce qui est vérifié n'est pas une liste de résultats attendus mais des propriétés qui doivent tenir pour n'importe quelle entrée.",
+        images: []
+      },
+      {
+        title: "Vérifier le comportement, pas l'état des données",
+        text: "Un log vide ne prouve pas qu'un arbre ne tourne pas ; un decorator présent dans un asset ne prouve pas qu'il agit. Le test de non-régression pilote donc une vraie session de jeu et interroge l'état runtime — arbre en cours, valeurs du Blackboard, position, montage d'animation actif. Il existe parce que trois régressions d'une même journée auraient toutes été attrapées en une minute par ce test, et ont à la place coûté une session entière : la vérification portait sur l'état des données, jamais sur le comportement réel.",
+        images: []
+      },
+      {
+        title: "Et l'agent lui-même",
+        text: "Le dernier angle mort était plus en amont : rien ne garantissait que l'agent qui pilote tout ça respecte les règles que le projet lui impose. Documenter une règle après un incident répare le passé ; elle ne protège pas contre la fois suivante, avec une tâche formulée autrement. Dix scénarios reproduisent donc, avec des outils factices, des pièges réellement rencontrés — un screenshot périmé face à une capture fraîche, une compilation réussie prise pour une vérification de gameplay — et notent la trajectoire de l'agent. Le tout en gate CI, parce qu'une procédure non vérifiable finit par ne pas être suivie.",
+        images: []
+      },
+    ],
+  },
+  {
     id: "cs-group",
     group: "engineering",
     title: "Simulateur Aéronautique",
@@ -25,7 +87,6 @@ export const projects = [
     id: "level-design-tools",
     githubUrl: "https://github.com/ThomasLabetouille/unity-room-builder",
     group: "engineering",
-    featured: true,
     title: "Banc de test automatisé — outil 3D",
     subtitle: "C#, Unity 6 — 40 000 cas vérifiés, 21 défauts injectés, 4 vrais bugs trouvés — Projet personnel",
     engine: "Unity", category: "Unity",
@@ -157,67 +218,6 @@ export const projects = [
       {
         title: "Bordereau : vérifier le lien, pas la présence",
         text: "Sur un courrier qui porte trois hôtels, quatre prix et deux dates d'arrivée, un modèle n'invente rien : il croise deux réservations. Bordereau découpe donc le courrier en blocs autour des références de dossier et ne cherche une valeur que dans son bloc — sans modèle, 96 % des champs sont trouvés et aucun n'est mal rattaché. Le modèle n'intervient que sur les champs restés vides, un à la fois, et ne peut répondre qu'un numéro parmi les candidats présentés. Sa seule erreur possible est donc exactement celle que la mesure détaille champ par champ.",
-        images: []
-      },
-    ],
-  },
-  {
-    id: "assistant-ue5-local",
-    group: "engineering",
-    title: "Assistant IA local × UE5",
-    subtitle: "Assistant qui pilote Unreal Engine 5.8 en langage naturel, 100 % en local, et la boîte à outils du projet GameAnimationSample — Projet personnel",
-    engine: "UE5", category: "UE5",
-    tags: ["IA", "LLM local", "MCP", "RAG", "UE5", "C++", "Behavior Trees", "Tests"],
-    year: "2026",
-    color: "#ead6af",
-    role: "Développeur solo",
-    type: "Outil / IA locale",
-    status: "ongoing",
-    images: ["/images/assistant-ue5-local/cover.png"],
-    description: "Un assistant en langage naturel qui pilote Unreal Engine 5.8 en tournant entièrement sur ma carte graphique : pas de compte, pas d'abonnement, pas de connexion une fois installé. Son terrain est GameAnimationSample, autour duquel se sont construits quatre plugins Unreal Engine 5.8 et un harnais d'évaluation, réunis sous une contrainte tenue du début à la fin : rien ne se pilote à l'écran. Tout — construire un niveau, câbler un Behavior Tree, jouer une session pour vérifier un comportement — doit passer par du script. C'est cette contrainte qui a forcé à écrire les outils qui manquaient, puis à vérifier qu'ils font ce qu'ils prétendent, et enfin à vérifier que l'agent qui les utilise respecte lui-même les règles du projet.",
-    tech: ["Ollama", "Qwen2.5-Coder 14B", "MCP", "RAG", "Python", "Unreal Engine 5.8", "C++", "Slate", "Behavior Trees", "Motion Warping", "OpenTelemetry", "GitHub Actions"],
-    highlights: [
-      "Assistant UE5 local — Qwen2.5-Coder 14B via Ollama sur une RTX 4070, boucle d'agent et client MCP maison branchés sur les serveurs Unreal (dont celui du projet : PNJ, Behavior Trees, playtest). Aucune connexion Internet une fois installé",
-      "RAG construit depuis l'éditeur lui-même : 14 572 méthodes de l'API Python d'UE 5.8.2 et 3 931 assets du projet avec leurs vrais chemins, pour que le modèle cesse d'inventer des fonctions et des chemins qui n'existent pas. Conventions du projet injectées à chaque message, règles situationnelles servies seulement quand elles concernent la question",
-      "Garde-fous côté code plutôt que confiance dans le modèle : confirmation avant tout outil qui modifie le projet (une phrase en réponse redirige le modèle), appel d'outil écrit en texte exécuté seulement si l'outil existe vraiment, plafond de temps sur chaque appel MCP, journal des pannes, et impossibilité d'annoncer une réussite après un échec d'outil — 22 scripts de test avec un faux modèle, sans Unreal",
-      "BlockoutTools — outil de level design Slate pour UE5.8 : salle paramétrique, contour dessiné dans le viewport puis extrudé en direct (Ctrl contraint à angles droits, Ctrl+F ferme d'équerre), et découpe de portes et fenêtres sur la surface survolée. Le panneau est livré à quelqu'un qui ne programme pas, avec une notice d'installation en trois minutes et une ligne de statut qui explique toujours ce qui s'est passé",
-      "La géométrie de BlockoutTools ne dépend d'aucune API Unreal — une centaine de lignes de doublures suffisent à la compiler hors moteur. Le harnais exerce donc les fichiers du projet, pas des copies : 40 000 contours en une seconde, contre un rebuild du plugin (éditeur fermé, ~2 min) plus un aller-retour dans l'éditeur",
-      "Des propriétés plutôt que des résultats figés : aire triangulée égale à l'aire du contour moins les trous, couverture exacte, prisme recto-verso d'épaisseur juste, seuil de dégénérescence relatif à la taille du panneau, aucune T-jonction, déterminisme au bit près",
-      "Un bug du harnais lui-même, trouvé avant qu'il ne serve : le générateur de contours tirait des angles uniformes puis les triait, ce qui ne donne un polygone simple que si les sommets font le tour du centre — 57 contours auto-intersectants sur 2 000 étaient reprochés au code testé. Deux seuils ont aussi dû être recalés sur le contrat réel du code plutôt que sur une intuition",
-      "BTAuthoringKit — plugin C++ qui expose une API scriptable pour construire des Behavior Trees complets (Blackboard, composites, tasks, decorators, services, graphe visuel inclus) sans jamais ouvrir l'éditeur de graphe. Écrit parce que ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree",
-      "Injection d'input au même point qu'une vraie pression de touche : elle traverse l'Input Mapping Context, les modifiers et les triggers. Mesuré en PIE réelle, 1037 cm parcourus en 4 s. C'est ce qui rend la vérification comportementale possible sans jamais piloter l'écran — les deux voies naturelles étant mortes, chacune pour une raison distincte",
-      "Un test de non-régression qui pilote seul une session de jeu (~52 s de temps de jeu) et vérifie sept points par le comportement réel plutôt que par l'état des données : arbre lancé, controller unique, déplacement, animation d'assise, détection par perception réelle, rapprochement du joueur, aucun PNJ figé",
-      "IA de PNJ à tolérance et habituation : trois niveaux d'attention écrits dans le Blackboard à 10 Hz, une habituation qui resserre les seuils quand le joueur reste à distance et qui se perd si on brusque le sujet. Le choix d'abort du decorator a été tranché par la mesure, pas par la doctrine — 1308 cm de fuite avec l'un, 2060 cm avec l'autre, pour un critère à 1500",
-      "Assise contextuelle : le joueur peut s'asseoir partout où la géométrie le permet, à n'importe quelle hauteur — pas sur une liste de paliers. Le domaine est proportionnel à la taille du personnage, lue sur sa capsule de collision : un rebord de 80 cm est un siège pour un adulte et un mur pour un enfant",
-      "Combat à deux mains avec des règles d'input distinctes par touche, IA de combat en machine à états C++ réutilisée par héritage sur plusieurs archétypes, et un système de puzzle interrupteurs → porte générique, instancié par script pour n'importe quelle séquence plutôt que codé en dur",
-      "EvalHarness — dix scénarios qui notent le comportement de l'agent IA lui-même, chacun reproduisant avec des outils factices un piège réellement documenté dans l'historique du projet. L'agent reçoit une tâche ambiguë, un outil piégé et un outil fiable ; sa trajectoire est notée : a-t-il pris le bon outil, et sa conclusion est-elle fondée sur ce qu'il a vérifié plutôt que supposé",
-      "Le harnais tourne en gate CI à chaque modification des règles du projet, avec un seuil de passage qui fait échouer le build — et les règles injectées dans l'éval sont extraites du fichier de règles réel, donc une règle qui change là-bas est suivie sans duplication. Les points d'entrée qui comptent exposent des spans OpenTelemetry (durée, verdict, compteurs de régression) plutôt que des lignes de log à recompter à la main",
-    ],
-    gallery: [],
-    sections: [
-      {
-        title: "Un assistant qui tourne en local",
-        text: "Un modèle de 14 milliards de paramètres sur une carte de 12 Go ne raisonne pas comme un grand modèle en ligne : il se trompe plus, invente des API et annonce volontiers un succès. L'assistant compense par le code. Les vraies signatures et les vrais chemins d'assets lui sont mis sous les yeux avant qu'il réponde, une question n'est jamais traitée comme un ordre, chaque modification attend un accord, et une réponse qui déclare « le PNJ est prêt » juste après une erreur d'outil est interceptée. Sur des tâches cadrées — écrire un script Unreal, créer un PNJ, régler une scène — il est utilisable au quotidien, sans coût.",
-        images: []
-      },
-      {
-        title: "Une contrainte qui force l'outillage",
-        text: "Le projet interdit de piloter l'écran. Tout doit être scriptable — et c'est en s'y tenant qu'on découvre ce qui manque vraiment. Construire un Behavior Tree par script a buté sur une limite réelle : ni l'API Python d'Unreal ni l'outillage Blueprint existant ne savent éditer le graphe d'un Behavior Tree, seulement des Blueprints classiques. BTAuthoringKit comble exactement ce trou. Vérifier un comportement en jeu a buté sur une autre limite : le pawn joueur ne consomme pas l'input Blueprint standard, et l'injection Enhanced Input directe est inatteignable depuis Python. La bibliothèque d'input scripté ne fait qu'une chose — obtenir l'instance qui manquait — et l'input entre ensuite au même point qu'une vraie touche.",
-        images: []
-      },
-      {
-        title: "Vérifier la géométrie hors moteur",
-        text: "Le noyau géométrique de l'outil de blockout ne référence aucun type Unreal. Une centaine de lignes de doublures suffisent donc à le compiler et à l'exercer en dehors de l'éditeur : une passe de 40 000 contours prend une seconde, là où un rebuild du plugin demande de fermer l'éditeur et deux minutes. Le harnais compile les fichiers du projet, pas des copies — si la géométrie se met à utiliser un type Unreal absent des doublures, il ne compile plus et on le sait immédiatement. Ce qui est vérifié n'est pas une liste de résultats attendus mais des propriétés qui doivent tenir pour n'importe quelle entrée.",
-        images: []
-      },
-      {
-        title: "Vérifier le comportement, pas l'état des données",
-        text: "Un log vide ne prouve pas qu'un arbre ne tourne pas ; un decorator présent dans un asset ne prouve pas qu'il agit. Le test de non-régression pilote donc une vraie session de jeu et interroge l'état runtime — arbre en cours, valeurs du Blackboard, position, montage d'animation actif. Il existe parce que trois régressions d'une même journée auraient toutes été attrapées en une minute par ce test, et ont à la place coûté une session entière : la vérification portait sur l'état des données, jamais sur le comportement réel.",
-        images: []
-      },
-      {
-        title: "Et l'agent lui-même",
-        text: "Le dernier angle mort était plus en amont : rien ne garantissait que l'agent qui pilote tout ça respecte les règles que le projet lui impose. Documenter une règle après un incident répare le passé ; elle ne protège pas contre la fois suivante, avec une tâche formulée autrement. Dix scénarios reproduisent donc, avec des outils factices, des pièges réellement rencontrés — un screenshot périmé face à une capture fraîche, une compilation réussie prise pour une vérification de gameplay — et notent la trajectoire de l'agent. Le tout en gate CI, parce qu'une procédure non vérifiable finit par ne pas être suivie.",
         images: []
       },
     ],
