@@ -7,7 +7,6 @@ const FILTER_KEYS = ["Tous", "UE5", "Unity", "Logiciel", "Simulation"];
 
 export default function Projects() {
   const [active, setActive] = useState("Tous");
-  const [expanded, setExpanded] = useState(null);
   const { t, tProject } = useLang();
 
   const FILTER_LABEL_KEYS = { "Tous": "proj_filter_all", "Logiciel": "proj_filter_software" };
@@ -62,41 +61,18 @@ export default function Projects() {
           </div>
           <Link to={`/project/${p.id}`} className="project-title">{pTr.title}</Link>
           <div className="project-subtitle">{pTr.subtitle}</div>
-          <div className="project-desc">{pTr.description}</div>
 
-          <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap", marginBottom:"1rem" }}>
+          <div style={{ display:"flex", gap:".6rem", flexWrap:"wrap", marginTop:"1.2rem" }}>
             <Link
               to={`/project/${p.id}`}
               className="project-expand-btn project-open-btn"
             >
               {t("proj_see")}
             </Link>
-            <button
-              className="project-expand-btn"
-              onClick={() => setExpanded(expanded === p.id ? null : p.id)}
-            >
-              {expanded === p.id ? t("proj_details_close") : t("proj_details")}
-            </button>
             {p.githubUrl && (
               <a className="project-expand-btn" href={p.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
             )}
           </div>
-
-          {expanded === p.id && (
-            <div className="project-details">
-              <ul className="project-highlights">
-                {pTr.highlights.map((h, i) => <li key={i}>{h}</li>)}
-              </ul>
-              <div className="project-tags">
-                {p.tech.map((tech) => <span className="project-tag" key={tech}>{tech}</span>)}
-              </div>
-              {p.itchUrl && (
-                <a className="project-itch" href={p.itchUrl} target="_blank" rel="noreferrer">
-                  {t("detail_itch")}
-                </a>
-              )}
-            </div>
-          )}
           </>); })()}
         </div>
       </div>
