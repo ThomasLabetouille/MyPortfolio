@@ -1,53 +1,5 @@
 export const projects = [
   {
-    id: "vigie",
-    githubUrl: "https://github.com/ThomasLabetouille/vigie",
-    group: "engineering",
-    title: "Vigie — sûreté de vol pour drone",
-    subtitle: "Logiciel embarqué en Rust qui surveille un drone et le ramène seul en cas de danger — Projet personnel",
-    engine: "Rust", category: "Logiciel",
-    tags: ["Rust", "Embarqué", "Drone", "PX4", "MAVLink", "Simulation", "Tests"],
-    year: "2026",
-    color: "#ead6af",
-    role: "Développeur solo",
-    type: "Logiciel embarqué / Drone",
-    status: "ongoing",
-    images: ["/images/vigie/cover.png"],
-    description: "Un logiciel qui tourne à bord d'un drone, à côté de son pilote automatique, et qui le surveille en permanence. Si le drone sort de la zone où il a le droit de voler, si sa batterie devient trop faible ou s'il perd le contact avec la station au sol, Vigie lui ordonne de rentrer ou de se poser, sans intervention humaine. Tout est testé en simulation : un drone virtuel piloté par PX4, le pilote automatique le plus répandu, dans le simulateur 3D Gazebo. Sur le vol de démonstration, le drone est envoyé hors de sa zone ; Vigie le détecte, ordonne le retour, et le drone revient se poser à son point de départ. Écrit en Rust, développé avec l'assistance de Claude.",
-    tech: ["Rust", "tokio", "MAVLink", "PX4", "Gazebo", "QGroundControl", "no_std", "proptest", "GitHub Actions", "cargo-deny", "WSL2"],
-    highlights: [
-      "Vol simulé de bout en bout : le drone franchit la limite de zone, Vigie déclenche le retour, PX4 accuse réception en 16 ms et le drone revient se poser seul",
-      "Quatre règles de sûreté par ordre de priorité : batterie critique → atterrissage, sortie de zone → retour, perte du lien sol → retour, batterie faible ou bord de zone proche → alerte",
-      "Une seule commande par incident, jamais de rafale ; le moniteur ne fait qu'escalader et seul le désarmement le remet à zéro. Si le pilote annule le retour, il garde la main",
-      "Cœur de sûreté sans allocation ni accès au système (no_std) : il compile aussi pour microcontrôleur Cortex-M, vérifié à chaque push",
-      "38 tests automatiques, dont des tests de propriétés sur la géométrie de la zone ; intégration continue avec clippy en mode strict, version minimale de Rust et audit des dépendances (cargo-deny)",
-      "Communication avec le pilote automatique en MAVLink (le protocole standard des drones), décodage testé sans réseau, boucle réseau asynchrone avec tokio",
-    ],
-    gallery: [],
-    sections: [
-      {
-        title: "Ce que fait Vigie",
-        text: "Vigie lit en continu ce que le pilote automatique annonce : position, altitude, batterie, état des moteurs, mode de vol. Dix fois par seconde, il compare cette situation à des règles simples et, si l'une est franchie, envoie un ordre de retour ou d'atterrissage. Il affiche aussi en clair ce que fait réellement le drone, ce qui permet de vérifier que l'ordre a été accepté et exécuté.",
-        images: []
-      },
-      {
-        title: "Le vol de démonstration",
-        text: "Depuis la station sol QGroundControl, le drone décolle puis part vers un point situé hors de sa zone autorisée. La marge restante diminue sur le journal de Vigie ; une alerte tombe à moins de 20 m du bord, puis le franchissement déclenche le retour. Le drone monte à 30 m, rentre, attend au-dessus de son point de départ et se pose. Pendant l'attente, la marge affichée passe de 107 à 90 m : à 30 m d'altitude, c'est le plafond de 120 m qui devient la limite la plus proche.",
-        images: []
-      },
-      {
-        title: "Une logique testable sans drone",
-        text: "Toute la partie qui décide ne fait aucun accès réseau et ne lit jamais l'horloge : l'heure lui est fournie. Chaque scénario se rejoue donc dans un test, en quelques millisecondes, sans simulateur. Les règles sont écrites en tête du code et quinze tests les vérifient une par une, y compris les cas limites : lien sol jamais établi, batterie inconnue, retour annulé puis réarmement.",
-        images: []
-      },
-      {
-        title: "Suite du projet",
-        text: "Prochaines étapes : détection d'objets par IA embarquée sur la caméra du drone simulé, image Linux embarquée construite avec Yocto et démarrée dans un émulateur ARM, puis liaison chiffrée avec la station sol.",
-        images: []
-      },
-    ],
-  },
-  {
     id: "assistant-ue5-local",
     group: "engineering",
     featured: true,
@@ -105,6 +57,54 @@ export const projects = [
       {
         title: "Et l'agent lui-même",
         text: "Le dernier angle mort était plus en amont : rien ne garantissait que l'agent qui pilote tout ça respecte les règles que le projet lui impose. Documenter une règle après un incident répare le passé ; elle ne protège pas contre la fois suivante, avec une tâche formulée autrement. Dix scénarios reproduisent donc, avec des outils factices, des pièges réellement rencontrés — un screenshot périmé face à une capture fraîche, une compilation réussie prise pour une vérification de gameplay — et notent la trajectoire de l'agent. Le tout en gate CI, parce qu'une procédure non vérifiable finit par ne pas être suivie.",
+        images: []
+      },
+    ],
+  },
+  {
+    id: "vigie",
+    githubUrl: "https://github.com/ThomasLabetouille/vigie",
+    group: "engineering",
+    title: "Vigie — sûreté de vol pour drone",
+    subtitle: "Logiciel embarqué en Rust qui surveille un drone et le ramène seul en cas de danger — Projet personnel",
+    engine: "Rust", category: "Logiciel",
+    tags: ["Rust", "Embarqué", "Drone", "PX4", "MAVLink", "Simulation", "Tests"],
+    year: "2026",
+    color: "#ead6af",
+    role: "Développeur solo",
+    type: "Logiciel embarqué / Drone",
+    status: "ongoing",
+    images: ["/images/vigie/cover.png"],
+    description: "Un logiciel qui tourne à bord d'un drone, à côté de son pilote automatique, et qui le surveille en permanence. Si le drone sort de la zone où il a le droit de voler, si sa batterie devient trop faible ou s'il perd le contact avec la station au sol, Vigie lui ordonne de rentrer ou de se poser, sans intervention humaine. Tout est testé en simulation : un drone virtuel piloté par PX4, le pilote automatique le plus répandu, dans le simulateur 3D Gazebo. Sur le vol de démonstration, le drone est envoyé hors de sa zone ; Vigie le détecte, ordonne le retour, et le drone revient se poser à son point de départ. Écrit en Rust, développé avec l'assistance de Claude.",
+    tech: ["Rust", "tokio", "MAVLink", "PX4", "Gazebo", "QGroundControl", "no_std", "proptest", "GitHub Actions", "cargo-deny", "WSL2"],
+    highlights: [
+      "Vol simulé de bout en bout : le drone franchit la limite de zone, Vigie déclenche le retour, PX4 accuse réception en 16 ms et le drone revient se poser seul",
+      "Quatre règles de sûreté par ordre de priorité : batterie critique → atterrissage, sortie de zone → retour, perte du lien sol → retour, batterie faible ou bord de zone proche → alerte",
+      "Une seule commande par incident, jamais de rafale ; le moniteur ne fait qu'escalader et seul le désarmement le remet à zéro. Si le pilote annule le retour, il garde la main",
+      "Cœur de sûreté sans allocation ni accès au système (no_std) : il compile aussi pour microcontrôleur Cortex-M, vérifié à chaque push",
+      "38 tests automatiques, dont des tests de propriétés sur la géométrie de la zone ; intégration continue avec clippy en mode strict, version minimale de Rust et audit des dépendances (cargo-deny)",
+      "Communication avec le pilote automatique en MAVLink (le protocole standard des drones), décodage testé sans réseau, boucle réseau asynchrone avec tokio",
+    ],
+    gallery: [],
+    sections: [
+      {
+        title: "Ce que fait Vigie",
+        text: "Vigie lit en continu ce que le pilote automatique annonce : position, altitude, batterie, état des moteurs, mode de vol. Dix fois par seconde, il compare cette situation à des règles simples et, si l'une est franchie, envoie un ordre de retour ou d'atterrissage. Il affiche aussi en clair ce que fait réellement le drone, ce qui permet de vérifier que l'ordre a été accepté et exécuté.",
+        images: []
+      },
+      {
+        title: "Le vol de démonstration",
+        text: "Depuis la station sol QGroundControl, le drone décolle puis part vers un point situé hors de sa zone autorisée. La marge restante diminue sur le journal de Vigie ; une alerte tombe à moins de 20 m du bord, puis le franchissement déclenche le retour. Le drone monte à 30 m, rentre, attend au-dessus de son point de départ et se pose. Pendant l'attente, la marge affichée passe de 107 à 90 m : à 30 m d'altitude, c'est le plafond de 120 m qui devient la limite la plus proche.",
+        images: []
+      },
+      {
+        title: "Une logique testable sans drone",
+        text: "Toute la partie qui décide ne fait aucun accès réseau et ne lit jamais l'horloge : l'heure lui est fournie. Chaque scénario se rejoue donc dans un test, en quelques millisecondes, sans simulateur. Les règles sont écrites en tête du code et quinze tests les vérifient une par une, y compris les cas limites : lien sol jamais établi, batterie inconnue, retour annulé puis réarmement.",
+        images: []
+      },
+      {
+        title: "Suite du projet",
+        text: "Prochaines étapes : détection d'objets par IA embarquée sur la caméra du drone simulé, image Linux embarquée construite avec Yocto et démarrée dans un émulateur ARM, puis liaison chiffrée avec la station sol.",
         images: []
       },
     ],
