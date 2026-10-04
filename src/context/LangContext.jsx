@@ -3,6 +3,41 @@ import { createContext, useContext, useState } from "react";
 // Bilingual project data
 export const projectsData = {
   fr: {
+    "drone-nav-estimation": {
+      "title": "Navigation de drone — estimation d'état",
+      "subtitle": "Filtre de Kalman étendu sur IMU, GNSS, magnétomètre, baromètre et Pitot, rejoué sur de vrais vols PX4 et porté en C++ embarqué — Projet personnel",
+      "type": "Estimation d'état / Drone",
+      "role": "Développeur solo",
+      "description": "Un drone doit savoir à chaque instant où il est, à quelle vitesse il va et vers où il pointe. Aucun de ses capteurs ne le dit seul : le GNSS peut couper ou sauter, le magnétomètre est perturbé, la centrale inertielle dérive. Ce projet écrit le filtre qui les combine, un filtre de Kalman étendu à état d'erreur, et le valide en trois temps : sur des vols simulés où la vérité est connue, sur trois vrais vols PX4 en le comparant à l'EKF2 qui volait à bord, puis dans un portage C++ embarquable qui doit donner exactement les mêmes résultats que la version Python. Développé avec l'assistance de Claude.",
+      "highlights": [
+            "Filtre de Kalman étendu à état d'erreur, de 15 à 20 états : position, vitesse, attitude, biais du gyroscope et de l'accéléromètre, biais du GNSS et du baromètre, vent, échelle de la vitesse air et décalage de dérapage",
+            "Capteurs modélisés comme on les rencontre en vol : erreurs GNSS corrélées dans le temps et 150 ms de latence, biais qui dérivent, magnétomètre mal calibré, Pitot faux de 20 %",
+            "Modes dégradés : perte du GNSS, saut de 15 m, perturbation magnétique. Après 60 s sans GNSS, 15 m d'erreur contre 85 m avec la centrale inertielle seule (moyenne sur 40 vols simulés)",
+            "Test d'innovation χ² contre les mesures fausses, et deux protections contre le blocage qu'il peut provoquer : un filtre trop sûr de lui qui rejette pour toujours un capteur pourtant juste",
+            "Rejeu de trois vrais vols PX4 (logs ULog) : la position reste à 0,2 à 0,5 m de celle de l'EKF2 embarqué. Les logs ont invalidé trois hypothèses du simulateur (un champ magnétique 17 % plus faible que le modèle, un dérapage apparent de près de 10°, une vitesse air 36 % trop forte sur un vol), et le filtre a gagné les états qui les corrigent",
+            "Portage en C++17 avec Eigen : matrices de taille fixe, aucune allocation dynamique (vérifiée de deux façons indépendantes), mêmes états que Python à 10⁻¹¹ m près sur les vols réels, 4 µs par échantillon traité",
+            "Vérification en couches : 197 tests, oracles indépendants (scipy, dérivées numériques, Monte-Carlo), 63 bugs injectés tous détectés par les tests de mutation, et chaque chiffre publié rattaché à l'empreinte du code qui l'a produit",
+            "Deux vrais bugs trouvés par cette vérification : le signe de la jacobienne de réinitialisation, faux depuis la troisième étape, et une covariance impossible après la remise du filtre sur le GNSS"
+      ],
+      "sections": [
+            {
+                  "title": "Huit étapes",
+                  "text": "Le filtre a grandi par étapes, chacune validée avant la suivante : la voie verticale avec un accéléromètre et un baromètre, la navigation inertielle en 3D, un premier EKF qui fusionne l'IMU et le GNSS, un GNSS réaliste avec ses erreurs corrélées et sa latence, les capteurs d'un drone à voilure fixe dans le vent, les pannes, le rejeu de vrais vols, et enfin le portage en C++."
+            },
+            {
+                  "title": "Ce que les vrais vols ont appris",
+                  "text": "Un vrai vol n'a pas de vérité terrain. Le filtre y est jugé de trois façons : son écart à l'EKF2 qui volait à bord, la cohérence de ses innovations, et des pertes GNSS simulées sur le vol réel, où la position GNSS qui suit la perte sert de référence. Les logs ont surtout montré ce que la simulation supposait à tort sur les capteurs. Le baromètre dégrade encore la navigation à l'estime sur ces vols, et je n'en ai pas encore isolé la cause."
+            },
+            {
+                  "title": "Du Python au C++",
+                  "text": "Le C++ suit la version Python fonction par fonction. Python décide de tout ce qui précède la première prédiction et écrit le flux exact de mesures que le programme C++ doit traiter : les deux versions voient donc les mêmes entrées dans le même ordre, et leurs écarts se mesurent à l'arrondi près. Le C++ compile avec tous les avertissements traités comme des erreurs, et un test vérifie qu'aucune allocation n'a lieu pendant le vol."
+            },
+            {
+                  "title": "Vérifier du code écrit avec une IA",
+                  "text": "Une bonne partie du code et des tests a été écrite avec Claude. Un test écrit en même temps que le code risque de partager ses erreurs, donc la vérification passe par des chemins indépendants : scipy pour les rotations, des dérivées numériques pour chaque jacobienne, des Monte-Carlo pour les covariances, et des bugs injectés exprès pour vérifier que les tests les attrapent. C'est ce qui a trouvé les deux vrais bugs du filtre."
+            }
+      ]
+    },
     "vigie": {
       title: "Vigie — sûreté de vol pour drone", subtitle: "Logiciel embarqué en Rust qui surveille un drone et le ramène seul en cas de danger — Projet personnel", type: "Logiciel embarqué / Drone", role: "Développeur solo",
       description: "Un logiciel qui tourne à bord d'un drone, à côté de son pilote automatique, et qui le surveille en permanence. Si le drone sort de la zone où il a le droit de voler, si sa batterie devient trop faible ou s'il perd le contact avec la station au sol, Vigie lui ordonne de rentrer ou de se poser, sans intervention humaine. Tout est testé en simulation : un drone virtuel piloté par PX4, le pilote automatique le plus répandu, dans le simulateur 3D Gazebo. Sur le vol de démonstration, le drone est envoyé hors de sa zone ; Vigie le détecte, ordonne le retour, et le drone revient se poser à son point de départ. Écrit en Rust, développé avec l'assistance de Claude.",
@@ -208,6 +243,41 @@ export const projectsData = {
     },
   },
   en: {
+    "drone-nav-estimation": {
+      "title": "Drone navigation — state estimation",
+      "subtitle": "Extended Kalman filter over IMU, GNSS, magnetometer, barometer and pitot tube, replayed on real PX4 flights and ported to embedded C++ — Personal project",
+      "type": "State estimation / Drone",
+      "role": "Solo developer",
+      "description": "A drone has to know at every moment where it is, how fast it is going and where it is pointing. None of its sensors can tell it alone: GNSS can drop out or jump, the magnetometer gets disturbed, the inertial unit drifts. This project builds the filter that combines them, an error-state extended Kalman filter, and validates it in three stages: on simulated flights where the truth is known, on three real PX4 flights against the EKF2 that flew on board, and in an embeddable C++ port that must give exactly the same results as the Python version. Developed with the assistance of Claude.",
+      "highlights": [
+            "Error-state extended Kalman filter with 15 to 20 states: position, velocity, attitude, gyro and accelerometer biases, GNSS and barometer biases, wind, airspeed scale and sideslip offset",
+            "Sensors modelled the way they behave in flight: time-correlated GNSS errors and 150 ms of latency, drifting biases, a badly calibrated magnetometer, a pitot tube reading 20% off",
+            "Degraded modes: GNSS loss, a 15 m GNSS jump, magnetic disturbance. After 60 s without GNSS, 15 m of error against 85 m with the inertial unit alone (mean over 40 simulated flights)",
+            "χ² innovation gating against bad measurements, and two protections against the lock-out it can cause: an over-confident filter that rejects a perfectly good sensor forever",
+            "Replay of three real PX4 flights (ULog files): position stays within 0.2 to 0.5 m of the onboard EKF2. The logs disproved three assumptions of the simulator (a magnetic field 17% weaker than the model, an apparent sideslip of almost 10°, an airspeed 36% too high on one flight), and the filter gained the states that correct them",
+            "C++17 port with Eigen: fixed-size matrices, no dynamic allocation (checked in two independent ways), same states as Python to within 10⁻¹¹ m on the real flights, 4 µs per processed sample",
+            "Layered verification: 197 tests, independent oracles (scipy, numerical derivatives, Monte Carlo), 63 injected bugs all caught by mutation testing, and every published number tied to the fingerprint of the code that produced it",
+            "Two real bugs found by that verification: the sign of the reset Jacobian, wrong since the third step, and an impossible covariance after the filter was reset onto GNSS"
+      ],
+      "sections": [
+            {
+                  "title": "Eight steps",
+                  "text": "The filter grew step by step, each one validated before the next: the vertical channel with an accelerometer and a barometer, 3D inertial navigation, a first EKF fusing IMU and GNSS, realistic GNSS with correlated errors and latency, the sensors of a fixed-wing drone flying in wind, sensor faults, the replay of real flights, and finally the C++ port."
+            },
+            {
+                  "title": "What the real flights taught",
+                  "text": "A real flight has no ground truth. The filter is judged in three ways: its distance to the EKF2 that flew on board, the consistency of its innovations, and GNSS outages simulated on the real flight, where the GNSS fix right after the outage is the reference. Above all, the logs showed what the simulation wrongly assumed about the sensors. The barometer still degrades dead reckoning on these flights, and I have not isolated the cause yet."
+            },
+            {
+                  "title": "From Python to C++",
+                  "text": "The C++ follows the Python version function by function. Python decides everything before the first prediction and writes the exact stream of measurements the C++ program must process, so both versions see the same inputs in the same order and their differences can be measured down to rounding. The C++ builds with every warning treated as an error, and a test checks that no allocation happens in flight."
+            },
+            {
+                  "title": "Verifying AI-written code",
+                  "text": "A good part of the code and tests was written with Claude. A test written together with the code risks sharing its mistakes, so verification goes through independent paths: scipy for rotations, numerical derivatives for every Jacobian, Monte Carlo runs for covariances, and bugs injected on purpose to check that the tests catch them. That is what found the filter's two real bugs."
+            }
+      ]
+    },
     "vigie": {
       title: "Vigie — drone flight safety", subtitle: "Embedded Rust software that monitors a drone and brings it back on its own when something goes wrong — Personal project", type: "Embedded software / Drone", role: "Solo developer",
       description: "Software that runs on board a drone, next to its autopilot, and watches it continuously. If the drone leaves the area it is allowed to fly in, if its battery gets too low, or if it loses contact with the ground station, Vigie orders it to return or land, with no human involved. Everything is tested in simulation: a virtual drone flown by PX4, the most widely used autopilot, in the Gazebo 3D simulator. In the demo flight the drone is sent outside its area; Vigie detects it, orders the return, and the drone lands back at its starting point. Written in Rust, developed with the assistance of Claude.",
@@ -506,7 +576,8 @@ const translations = {
     skills_label: "Compétences",
     skills_title: "Stack &\nsavoir-faire",
     skills: [
-      { category: "Langages", items: ["C++ (principal)", "C#", "Python", "Java", "SQL"] },
+      { category: "Estimation & drones", items: ["Filtre de Kalman / EKF", "Fusion IMU / GNSS / magnétomètre / baro / Pitot", "Navigation inertielle", "PX4 (ULog, EKF2, SITL)", "MAVLink", "C++ embarqué (Eigen, sans allocation)"] },
+      { category: "Langages", items: ["C++ (principal)", "C#", "Python", "Rust", "Java", "SQL"] },
       { category: "Tests & fiabilité", items: ["Tests automatisés", "Non-régression", "Tests de propriétés", "Mutation testing", "Intégration continue (GitHub Actions)", "pytest"] },
       { category: "Simulation & 3D", items: ["Inscape VTS", "Temps réel", "Scénarios d'entraînement", "Unreal Engine 5", "Unity 6", "Physique & comportements simulés"] },
       { category: "Architecture", items: ["Architecture modulaire", "Débogage de comportements complexes", "Exigences fonctionnelles", "Documentation technique"] },
@@ -540,6 +611,10 @@ const translations = {
     detail_prev: "← Projet précédent",
     detail_next: "Projet suivant →",
 
+    gallery_drone_outage: "Perte du GNSS pendant 60 s : où le drone croit-il être ?",
+    gallery_drone_real_outages: "Pertes GNSS simulées sur deux vrais vols PX4",
+    gallery_drone_sensors: "Ce que les vrais logs disent des capteurs",
+    gallery_drone_cpp: "Écart entre le portage C++ et la version Python sur les vols réels",
     gallery_claude_panel: "Panneau Claude AI dans l'éditeur UE5",
     gallery_claude_level: "Level design procédural généré par l'agent",
     gallery_claude_python: "Exécution Python temps réel depuis le chat",
@@ -637,7 +712,8 @@ const translations = {
     skills_label: "Skills",
     skills_title: "Stack &\nexpertise",
     skills: [
-      { category: "Languages", items: ["C++ (main)", "C#", "Python", "Java", "SQL"] },
+      { category: "Estimation & drones", items: ["Kalman filter / EKF", "IMU / GNSS / magnetometer / baro / pitot fusion", "Inertial navigation", "PX4 (ULog, EKF2, SITL)", "MAVLink", "Embedded C++ (Eigen, allocation-free)"] },
+      { category: "Languages", items: ["C++ (main)", "C#", "Python", "Rust", "Java", "SQL"] },
       { category: "Testing & reliability", items: ["Automated testing", "Regression testing", "Property-based testing", "Mutation testing", "Continuous integration (GitHub Actions)", "pytest"] },
       { category: "Simulation & 3D", items: ["Inscape VTS", "Real-time", "Training scenarios", "Unreal Engine 5", "Unity 6", "Physics & simulated behaviour"] },
       { category: "Architecture", items: ["Modular architecture", "Debugging complex behaviour", "Functional requirements", "Technical documentation"] },
@@ -671,6 +747,10 @@ const translations = {
     detail_prev: "← Previous project",
     detail_next: "Next project →",
 
+    gallery_drone_outage: "60 s GNSS outage: where does the drone think it is?",
+    gallery_drone_real_outages: "GNSS outages simulated on two real PX4 flights",
+    gallery_drone_sensors: "What the real logs say about the sensors",
+    gallery_drone_cpp: "Difference between the C++ port and the Python version on real flights",
     gallery_claude_panel: "Claude AI panel inside the UE5 editor",
     gallery_claude_level: "Procedural level design generated by the agent",
     gallery_claude_python: "Real-time Python execution from the chat",
