@@ -596,6 +596,8 @@ const translations = {
     contact_github_value: "ThomasLabetouille",
     contact_cv_label: "CV",
     contact_cv_value: "Télécharger mon CV",
+    contact_freelance_label: "Activité freelance",
+    contact_freelance_value: "IA appliquée au voyage",
     contact_cv_file: "/CV_Thomas_Labetouille_FR.pdf",
     footer: "Développeur logiciel C++ / C# · Toulouse, France",
 
@@ -607,6 +609,7 @@ const translations = {
     detail_tech: "Technologies",
     detail_itch: "↗ Télécharger sur itch.io",
     detail_github: "↗ Voir le code sur GitHub",
+    detail_demo: "↗ Essayer la démo en ligne",
     detail_all: "← Tous les projets",
     detail_prev: "← Projet précédent",
     detail_next: "Projet suivant →",
@@ -732,6 +735,8 @@ const translations = {
     contact_github_value: "ThomasLabetouille",
     contact_cv_label: "Resume",
     contact_cv_value: "Download my resume",
+    contact_freelance_label: "Freelance",
+    contact_freelance_value: "Applied AI for travel",
     contact_cv_file: "/CV_Thomas_Labetouille_EN.pdf",
     footer: "C++ / C# Software Developer · Toulouse, France",
 
@@ -743,6 +748,7 @@ const translations = {
     detail_tech: "Technologies",
     detail_itch: "↗ Download on itch.io",
     detail_github: "↗ View the code on GitHub",
+    detail_demo: "↗ Try the live demo",
     detail_all: "← All projects",
     detail_prev: "← Previous project",
     detail_next: "Next project →",

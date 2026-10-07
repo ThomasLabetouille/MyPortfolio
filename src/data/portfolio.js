@@ -240,6 +240,7 @@ export const projects = [
   },
   {
     id: "comptoir",
+    demoUrl: "https://portfolio-freelance-lake.vercel.app/#demo",
     group: "engineering",
     title: "Comptoir & Bordereau",
     subtitle: "Deux outils pour agences de voyages à modèle de langage encadré — Projet personnel",

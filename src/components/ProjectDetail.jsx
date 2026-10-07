@@ -278,6 +278,10 @@ export default function ProjectDetail() {
           {project.githubUrl && (
             <a className="detail-github" href={project.githubUrl} target="_blank" rel="noreferrer">{t("detail_github")}</a>
           )}
+          {project.demoUrl && (
+            <a className="detail-github" href={project.demoUrl} target="_blank" rel="noreferrer"
+               style={{ marginLeft: project.githubUrl ? "0.8rem" : 0 }}>{t("detail_demo")}</a>
+          )}
           <div className="detail-meta-row">
             {pTr?.role && (
               <div className="detail-meta-item">
@@ -355,6 +359,11 @@ export default function ProjectDetail() {
             {project.githubUrl && (
               <a className="btn-primary" href={project.githubUrl} target="_blank" rel="noreferrer">
                 {t("detail_github")}
+              </a>
+            )}
+            {project.demoUrl && (
+              <a className="btn-primary" href={project.demoUrl} target="_blank" rel="noreferrer">
+                {t("detail_demo")}
               </a>
             )}
             {project.itchUrl && (

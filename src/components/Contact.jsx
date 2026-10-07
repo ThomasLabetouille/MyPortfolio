@@ -8,6 +8,7 @@ export default function Contact() {
     { label: t("contact_email_label"), value: "thomas.labetouille@gmail.com", href: "mailto:thomas.labetouille@gmail.com", icon: "✉", color: "#ead6af" },
     { label: "LinkedIn", value: "thomas-labetouille", href: "https://www.linkedin.com/in/thomas-labetouille-294b39212/", icon: "in", color: "#ead6af" },
     { label: t("contact_github_label"), value: t("contact_github_value"), href: "https://github.com/ThomasLabetouille", icon: "gh", color: "#8b949e" },
+    { label: t("contact_freelance_label"), value: t("contact_freelance_value"), href: "https://portfolio-freelance-lake.vercel.app/", icon: "↗", color: "#ead6af" },
     { label: t("contact_cv_label"), value: t("contact_cv_value"), href: t("contact_cv_file"), icon: "↓", color: "#ead6af", download: true },
   ];
 
