@@ -1,404 +1,191 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { projects } from "../data/portfolio";
-import { useLang } from "../context/LangContext";
+import { projectsData } from "../data/projectsData";
+import { useLang } from "../context/useLang";
+import { IconBack, IconClose, IconExternal } from "./Icons";
+
+// Les graphiques (PNG à fond clair) sont posés sur une planche claire ; les captures de jeu restent telles quelles.
+function Zoomable({ src, alt, label, onOpen, eager = false }) {
+  return (
+    <button type="button" onClick={() => onOpen({ src, alt })} aria-label={`${label} : ${alt}`}>
+      <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+    </button>
+  );
+}
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const { lang, s } = useLang();
+  // L'image agrandie est liée au projet affiché : changer de projet la referme.
+  const [zoomed, setZoomed] = useState(null);
+  const lightbox = zoomed?.id === id ? zoomed : null;
+  const setLightbox = (img) => setZoomed(img ? { ...img, id } : null);
+
   const project = projects.find((p) => p.id === id);
-  const [lightbox, setLightbox] = useState(null);
-  const { t, tProject } = useLang();
-  const pTr = tProject(id); // translated project data
+  const text = projectsData[lang]?.[id] ?? projectsData.fr[id];
+  const title = text?.title ?? project?.title;
+
+  // Ordre de lecture identique à celui de la page d'accueil.
+  const order = [...s.results.rows, ...s.tools.rows, ...s.games.rows];
+  const index = order.findIndex((r) => r.id === id);
+  const prev = index > 0 ? order[index - 1] : null;
+  const next = index >= 0 && index < order.length - 1 ? order[index + 1] : null;
+  const flagship = s.results.rows.find((r) => r.id === id);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [id]);
 
+  useEffect(() => {
+    if (title) document.title = `${title} — Thomas Labetouille`;
+  }, [title]);
+
+  useEffect(() => {
+    if (!lightbox) return undefined;
+    const onKey = (e) => e.key === "Escape" && setZoomed(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox]);
+
   if (!project) {
     return (
-      <div style={{ padding: "8rem 2rem", textAlign: "center" }}>
-        <p style={{ color: "var(--text2)", fontFamily: "var(--font-mono)" }}>Projet introuvable.</p>
-        <Link to="/" style={{ color: "var(--accent)" }}>← Retour</Link>
-      </div>
+      <main id="contenu" className="detail">
+        <div className="wrap">
+          <p className="lead">{s.detail.notFound}</p>
+          <Link className="btn" to="/#projets"><IconBack />{s.detail.back}</Link>
+        </div>
+      </main>
     );
   }
 
-  const currentIndex = projects.findIndex((p) => p.id === id);
-  const prev = projects[currentIndex - 1];
-  const next = projects[currentIndex + 1];
+  const sections = text?.sections ?? project.sections ?? [];
+  const highlights = text?.highlights ?? project.highlights ?? [];
+  const gallery = project.gallery ?? [];
+  const status = project.status === "completed" ? s.status.completed : s.status.ongoing;
+
+  const actions = (
+    <div className="row">
+      {project.githubUrl && (
+        <a className="btn primary" href={project.githubUrl} target="_blank" rel="noreferrer">{s.detail.github}<IconExternal /></a>
+      )}
+      {project.demoUrl && (
+        <a className="btn" href={project.demoUrl} target="_blank" rel="noreferrer">{s.detail.demo}<IconExternal /></a>
+      )}
+      {project.itchUrl && (
+        <a className="btn" href={project.itchUrl} target="_blank" rel="noreferrer">{s.detail.itch}<IconExternal /></a>
+      )}
+    </div>
+  );
+  const hasActions = project.githubUrl || project.demoUrl || project.itchUrl;
 
   return (
-    <>
-      <style>{`
-        .detail-page { min-height: 100vh; padding-top: 64px; }
+    <main id="contenu" className="detail">
+      <div className="wrap">
+        <Link className="back" to="/#projets"><IconBack />{s.detail.back}</Link>
 
-        /* Hero */
-        .detail-hero {
-          padding: 4rem 2rem 3rem;
-          max-width: 1100px; margin: 0 auto;
-          border-bottom: 1px solid var(--border);
-        }
-        .detail-back {
-          display: inline-flex; align-items: center; gap: .5rem;
-          font-family: var(--font-mono); font-size: .72rem;
-          color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
-          margin-bottom: 2rem; transition: color .2s;
-        }
-        .detail-back:hover { color: var(--accent); }
-        .detail-badges { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
-        .detail-badge {
-          font-family: var(--font-mono); font-size: .62rem;
-          letter-spacing: .1em; text-transform: uppercase;
-          padding: .25rem .7rem;
-        }
-        .detail-badge-engine {
-          background: var(--project-color, var(--accent));
-          color: var(--bg); font-weight: 700;
-        }
-        .detail-badge-type {
-          border: 1px solid var(--project-color, var(--accent));
-          color: var(--project-color, var(--accent));
-        }
-        .detail-badge-year {
-          border: 1px solid var(--border); color: var(--text3);
-        }
-        .detail-badge-completed { background: rgba(234,214,175,0.92); color: #262626; font-weight: 700; }
-        .detail-badge-ongoing { background: rgba(190,190,190,0.92); color: #262626; font-weight: 700; }
-        .detail-title {
-          font-size: clamp(2rem, 4.5vw, 3.2rem);
-          font-weight: 600; letter-spacing: -.01em; line-height: 1.1;
-          margin-bottom: .6rem;
-        }
-        .detail-subtitle {
-          font-family: var(--font-mono); font-size: .85rem;
-          color: var(--project-color, var(--accent)); margin-bottom: 1.5rem;
-        }
-        .detail-desc {
-          font-family: var(--font-mono); font-size: 1rem;
-          color: var(--text2); line-height: 1.8; max-width: 680px;
-          font-weight: 300;
-        }
-        .detail-meta-row {
-          display: flex; gap: 2.5rem; margin-top: 2rem; flex-wrap: wrap;
-        }
-        .detail-meta-item .meta-label {
-          font-family: var(--font-mono); font-size: .62rem;
-          color: var(--text3); letter-spacing: .12em; text-transform: uppercase;
-          margin-bottom: .3rem;
-        }
-        .detail-meta-item .meta-val {
-          font-size: .9rem; font-weight: 700; color: var(--text);
-        }
+        <ul className="detail-meta">
+          {text?.type && <li>{text.type}</li>}
+          <li>{project.year}</li>
+          <li>{status}</li>
+        </ul>
+        <h1>{title}</h1>
+        <p className="detail-sub">{text?.subtitle ?? project.subtitle}</p>
 
-        /* Body */
-        .detail-body { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+        <section className="brief" aria-label={s.detail.summary}>
+          <h2>{s.detail.summary}</h2>
+          {flagship && (
+            <div className="brief-grid">
+              <span className="p-val">
+                {flagship.value}
+                {flagship.versus && <small>{flagship.versus}</small>}
+              </span>
+              <div>
+                <p>{flagship.result}</p>
+                {flagship.extra && <p>{flagship.extra}</p>}
+              </div>
+            </div>
+          )}
+          <dl className="facts" style={flagship ? undefined : { marginTop: 0, paddingTop: 0, borderTop: 0 }}>
+            {text?.role && <div><dt>{s.detail.role}</dt><dd>{text.role}</dd></div>}
+            <div><dt>{s.detail.engine}</dt><dd>{project.engine}</dd></div>
+            <div><dt>{s.detail.year}</dt><dd>{project.year}</dd></div>
+          </dl>
+        </section>
 
-        .detail-cover { width: 100%; max-height: 460px; object-fit: cover; display: block; border: 1px solid var(--border); margin-bottom: 3rem; }
-        .detail-github { display: inline-block; margin: 1.2rem 0 2rem; padding: .6rem 1.2rem; border: 1px solid var(--accent); color: var(--accent); font-size: .85rem; letter-spacing: .04em; border-radius: 3px; }
-        .detail-github:hover { background: var(--accent); color: var(--bg); }
-        /* Main gallery */
-        .detail-gallery {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 1rem; margin-bottom: 4rem;
-        }
-        .detail-gallery-item {
-          overflow: hidden; background: var(--surface);
-          border: 1px solid var(--border); cursor: pointer;
-          transition: border-color .2s, transform .2s; position: relative;
-        }
-        .detail-gallery-item:first-child {
-          grid-column: 1 / -1;
-        }
-        .detail-gallery-item:hover { border-color: var(--border2); transform: translateY(-2px); }
-        .detail-gallery-item img {
-          width: 100%; display: block;
-          transition: transform .4s;
-          max-height: 480px; object-fit: cover;
-        }
-        .detail-gallery-item:first-child img { max-height: 520px; }
-        .detail-gallery-item:hover img { transform: scale(1.03); }
-        .detail-gallery-caption {
-          padding: .6rem .9rem;
-          font-family: var(--font-mono); font-size: .65rem;
-          color: var(--text3); letter-spacing: .08em;
-          border-top: 1px solid var(--border);
-        }
+        <p className="lead">{text?.description ?? project.description}</p>
+        {hasActions && actions}
 
-        /* Sections */
-        .detail-section { margin-bottom: 4rem; }
-        .detail-section-title {
-          font-size: 1.3rem; font-weight: 600; margin-bottom: .5rem;
-          display: flex; align-items: center; gap: .8rem;
-        }
-        .detail-section-title::before {
-          content: ''; width: 3px; height: 1.3rem;
-          background: var(--project-color, var(--accent));
-          display: block; flex-shrink: 0;
-        }
-        .detail-section-text {
-          font-family: var(--font-mono); font-size: .96rem;
-          color: var(--text2); line-height: 1.8; font-weight: 300;
-          max-width: 680px; margin-bottom: 1.5rem;
-        }
-        .detail-section-imgs {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: .8rem;
-        }
-        .detail-section-imgs img {
-          width: 100%; display: block;
-          border: 1px solid var(--border);
-          cursor: pointer; transition: transform .2s, border-color .2s;
-        }
-        .detail-section-imgs img:hover {
-          transform: translateY(-2px); border-color: var(--border2);
-        }
+        {gallery.length === 0 && project.images?.[0] && (
+          <figure className="fig cover">
+            <img src={project.images[0]} alt={title} />
+          </figure>
+        )}
 
-        /* Highlights */
-        .detail-highlights { margin-bottom: 3rem; }
-        .detail-highlights h3 {
-          font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
-          color: var(--text3); font-family: var(--font-mono);
-          letter-spacing: .05em; text-transform: uppercase; font-size: .72rem;
-        }
-        .detail-highlights ul { list-style: none; }
-        .detail-highlights li {
-          font-family: var(--font-mono); font-size: .94rem;
-          color: var(--text2); line-height: 1.7;
-          padding: .5rem 0 .5rem 1.2rem; position: relative;
-          border-bottom: 1px solid var(--border);
-        }
-        .detail-highlights li::before {
-          content: '▸'; position: absolute; left: 0;
-          color: var(--project-color, var(--accent));
-        }
-
-        /* Tech tags */
-        .detail-tech { margin-bottom: 3rem; }
-        .detail-tech h3 {
-          font-family: var(--font-mono); font-size: .72rem;
-          color: var(--text3); letter-spacing: .12em; text-transform: uppercase;
-          margin-bottom: .8rem;
-        }
-        .detail-tech-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
-        .detail-tech-tag {
-          font-family: var(--font-mono); font-size: .72rem;
-          background: var(--surface); color: var(--text2);
-          border: 1px solid var(--border); padding: .35rem .9rem;
-          transition: border-color .2s, color .2s;
-        }
-        .detail-tech-tag:hover {
-          border-color: var(--project-color, var(--accent));
-          color: var(--text);
-        }
-
-        /* CTA */
-        .detail-cta { margin-bottom: 4rem; display: flex; gap: 1rem; flex-wrap: wrap; }
-        .btn-primary {
-          background: var(--accent); color: var(--bg);
-          border: none; padding: .85rem 2rem;
-          font-family: var(--font-display); font-size: .8rem;
-          letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
-          transition: transform .15s, box-shadow .15s; cursor: pointer;
-          clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(234,214,175,0.35); }
-        .btn-outline {
-          background: transparent; color: var(--text);
-          border: 1px solid var(--border2); padding: .85rem 2rem;
-          font-family: var(--font-display); font-size: .8rem;
-          letter-spacing: .12em; text-transform: uppercase;
-          transition: border-color .2s, color .2s; cursor: pointer;
-        }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-
-        /* Nav between projects */
-        .detail-nav {
-          border-top: 1px solid var(--border);
-          display: grid; grid-template-columns: 1fr 1fr;
-          gap: 1px; background: var(--border);
-        }
-        .detail-nav-item {
-          background: var(--bg2); padding: 1.5rem 2rem;
-          transition: background .2s;
-        }
-        .detail-nav-item:hover { background: var(--surface); }
-        .detail-nav-label {
-          font-family: var(--font-mono); font-size: .62rem;
-          color: var(--text3); letter-spacing: .12em; text-transform: uppercase;
-          margin-bottom: .4rem;
-        }
-        .detail-nav-title { font-size: 1rem; font-weight: 700; color: var(--text); }
-        .detail-nav-item.next { text-align: right; }
-
-        /* Lightbox */
-        .lightbox-overlay {
-          position: fixed; inset: 0; background: rgba(0,0,0,.92);
-          z-index: 1000; display: flex; align-items: center; justify-content: center;
-          cursor: pointer;
-        }
-        .lightbox-img {
-          max-width: 90vw; max-height: 88vh;
-          object-fit: contain; cursor: default;
-          border: 1px solid var(--border);
-        }
-        .lightbox-close {
-          position: absolute; top: 1.5rem; right: 1.5rem;
-          background: none; border: 1px solid var(--border);
-          color: var(--text); width: 40px; height: 40px;
-          font-size: 1.1rem; cursor: pointer;
-          transition: border-color .2s;
-        }
-        .lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
-
-        @media (max-width: 768px) {
-          .detail-gallery { grid-template-columns: 1fr; }
-          .detail-gallery-item:first-child { grid-column: auto; }
-          .detail-nav { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
-      <div className="detail-page" style={{ "--project-color": project.color }}>
-        {/* Hero */}
-        <div className="detail-hero">
-          <Link to="/#projects" className="detail-back">{t("detail_back")}</Link>
-          <div className="detail-badges">
-            <span className="detail-badge detail-badge-engine">{project.engine}</span>
-            {pTr?.type && <span className="detail-badge detail-badge-type">{pTr.type}</span>}
-            <span className="detail-badge detail-badge-year">{project.year}</span>
-            <span className={`detail-badge detail-badge-${project.status}`}>
-              {project.status === "completed" ? t("status_completed") : t("status_ongoing")}
-            </span>
+        {gallery.length > 0 && (
+          <div className="gallery">
+            {gallery.map((img, i) => {
+              const caption = img.captionKey ? s.gallery[img.captionKey] ?? "" : img.caption ?? "";
+              return (
+                <figure className="fig" key={img.src}>
+                  <Zoomable src={img.src} alt={caption || title} label={s.detail.zoom} onOpen={setLightbox} eager={i === 0} />
+                  {caption && <figcaption><b>Fig. {i + 1}</b>{caption}</figcaption>}
+                </figure>
+              );
+            })}
           </div>
-          <h1 className="detail-title">{pTr?.title ?? project.title}</h1>
-          <div className="detail-subtitle">{pTr?.subtitle ?? project.subtitle}</div>
-          <p className="detail-desc">{pTr?.description ?? project.description}</p>
-          {project.githubUrl && (
-            <a className="detail-github" href={project.githubUrl} target="_blank" rel="noreferrer">{t("detail_github")}</a>
-          )}
-          {project.demoUrl && (
-            <a className="detail-github" href={project.demoUrl} target="_blank" rel="noreferrer"
-               style={{ marginLeft: project.githubUrl ? "0.8rem" : 0 }}>{t("detail_demo")}</a>
-          )}
-          <div className="detail-meta-row">
-            {pTr?.role && (
-              <div className="detail-meta-item">
-                <div className="meta-label">{t("detail_role")}</div>
-                <div className="meta-val">{pTr?.role}</div>
+        )}
+
+        {sections.map((sec) => (
+          <section className="detail-sec" key={sec.title}>
+            <h2>{sec.title}</h2>
+            <p>{sec.text}</p>
+            {sec.images?.length > 0 && (
+              <div className="sec-imgs">
+                {sec.images.map((src) => (
+                  <Zoomable key={src} src={src} alt={sec.title} label={s.detail.zoom} onOpen={setLightbox} />
+                ))}
               </div>
             )}
-            <div className="detail-meta-item">
-              <div className="meta-label">{t("detail_engine")}</div>
-              <div className="meta-val">{project.engine}</div>
-            </div>
-            <div className="detail-meta-item">
-              <div className="meta-label">{t("detail_year")}</div>
-              <div className="meta-val">{project.year}</div>
-            </div>
-          </div>
-        </div>
+          </section>
+        ))}
 
-        {/* Body */}
-        <div className="detail-body">
+        {highlights.length > 0 && (
+          <section className="built">
+            <h2>{s.detail.highlights}</h2>
+            <ul>{highlights.map((h) => <li key={h}>{h}</li>)}</ul>
+          </section>
+        )}
 
-          {/* Cover when there is no gallery */}
-          {!(project.gallery?.length > 0) && project.images?.[0] && (
-            <img className="detail-cover" src={project.images[0]} alt={pTr?.title ?? project.title} />
-          )}
+        <section className="tech">
+          <h2>{s.detail.tech}</h2>
+          <p>{project.tech.join(" · ")}</p>
+        </section>
 
-          {/* Gallery */}
-          {project.gallery && project.gallery.length > 0 && (
-            <div className="detail-gallery">
-              {project.gallery.map((img, i) => {
-                const caption = img.captionKey ? t(img.captionKey) : img.caption;
-                return (
-                  <div className="detail-gallery-item" key={i} onClick={() => setLightbox(img.src)}>
-                    <img src={img.src} alt={caption} loading="lazy" />
-                    <div className="detail-gallery-caption">{caption}</div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+        {hasActions && actions}
 
-          {/* Sections */}
-          {(pTr?.sections ?? project.sections ?? []).map((sec, i) => (
-            <div className="detail-section" key={i}>
-              <h2 className="detail-section-title">{sec.title}</h2>
-              <p className="detail-section-text">{sec.text}</p>
-              {sec.images && sec.images.length > 0 && (
-                <div className="detail-section-imgs">
-                  {sec.images.map((src, j) => (
-                    <img key={j} src={src} alt={sec.title} loading="lazy" onClick={() => setLightbox(src)} />
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-
-          {/* Highlights */}
-          <div className="detail-highlights">
-            <h3>{t("detail_highlights")}</h3>
-            <ul>
-              {(pTr?.highlights ?? project.highlights).map((h, i) => <li key={i}>{h}</li>)}
-            </ul>
-          </div>
-
-          {/* Tech */}
-          <div className="detail-tech">
-            <h3>{t("detail_tech")}</h3>
-            <div className="detail-tech-tags">
-              {project.tech.map((t) => <span className="detail-tech-tag" key={t}>{t}</span>)}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="detail-cta">
-            {project.githubUrl && (
-              <a className="btn-primary" href={project.githubUrl} target="_blank" rel="noreferrer">
-                {t("detail_github")}
-              </a>
-            )}
-            {project.demoUrl && (
-              <a className="btn-primary" href={project.demoUrl} target="_blank" rel="noreferrer">
-                {t("detail_demo")}
-              </a>
-            )}
-            {project.itchUrl && (
-              <a className="btn-primary" href={project.itchUrl} target="_blank" rel="noreferrer">
-                {t("detail_itch")}
-              </a>
-            )}
-            <Link to="/#projects" className="btn-outline">{t("detail_all")}</Link>
-          </div>
-        </div>
-
-        {/* Project navigation */}
-        <div className="detail-nav">
-          {prev ? (
-            <Link to={`/project/${prev.id}`} className="detail-nav-item">
-              <div className="detail-nav-label">{t("detail_prev")}</div>
-              <div className="detail-nav-title">{prev.title}</div>
+        <nav className="pager" aria-label={s.detail.all}>
+          {prev && (
+            <Link to={`/project/${prev.id}`}>
+              <small>{s.detail.prev}</small>
+              <strong>{prev.name}</strong>
             </Link>
-          ) : <div className="detail-nav-item" />}
-          {next ? (
-            <Link to={`/project/${next.id}`} className="detail-nav-item next">
-              <div className="detail-nav-label">{t("detail_next")}</div>
-              <div className="detail-nav-title">{next.title}</div>
+          )}
+          {next && (
+            <Link className="next" to={`/project/${next.id}`}>
+              <small>{s.detail.next}</small>
+              <strong>{next.name}</strong>
             </Link>
-          ) : <div className="detail-nav-item" />}
-        </div>
+          )}
+        </nav>
       </div>
 
-      {/* Lightbox */}
       {lightbox && (
-        <div className="lightbox-overlay" onClick={() => setLightbox(null)}>
-          <img className="lightbox-img" src={lightbox} alt="" onClick={(e) => e.stopPropagation()} />
-          <button className="lightbox-close" onClick={() => setLightbox(null)}>✕</button>
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}>
+          <img src={lightbox.src} alt={lightbox.alt} onClick={(e) => e.stopPropagation()} />
+          <button type="button" autoFocus aria-label={s.detail.close} onClick={() => setLightbox(null)}><IconClose /></button>
         </div>
       )}
-    </>
+    </main>
   );
 }

@@ -1,90 +1,60 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useLang } from "../context/LangContext";
-import LangSwitcher from "./LangSwitcher";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useLang } from "../context/useLang";
+import { IconClose, IconDownload, IconMenu } from "./Icons";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const { lang, setLang, s } = useLang();
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-  const { t } = useLang();
-
-  const links = [
-    { href: "#experience", label: t("nav_experience") },
-    { href: "#projects",   label: t("nav_projects") },
-    { href: "#skills",     label: t("nav_skills") },
-    { href: "#about",      label: t("nav_about") },
-    { href: "#contact",    label: t("nav_contact") },
-  ];
 
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", h);
-    return () => window.removeEventListener("scroll", h);
-  }, []);
+    if (!open) return undefined;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
 
-  const handleNav = (e, href) => {
-    e.preventDefault();
-    setOpen(false);
-    if (isHome) {
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("/");
-      setTimeout(() => document.querySelector(href)?.scrollIntoView({ behavior: "smooth" }), 120);
-    }
-  };
+  const items = [
+    { to: "/#projets", label: s.nav.projects },
+    { to: "/#parcours", label: s.nav.experience },
+    { to: "/#competences", label: s.nav.skills },
+    { to: "/#contact", label: s.nav.contact },
+  ];
 
   return (
-    <>
-      <style>{`
-        .nav {
-          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          padding: 0 2rem; height: 64px;
-          display: flex; align-items: center; justify-content: space-between;
-          background: #533c36;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-        }
-        .nav-logo { font-family: var(--font-display); font-size: .95rem; font-weight: 600; color: #fff; letter-spacing: .08em; cursor: pointer; }
-        .nav-logo span { color: var(--text2); }
-        .nav-right { display: flex; align-items: center; gap: 1rem; }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .nav-links a { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: #e6dccf; transition: color .2s; position: relative; cursor: pointer; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--accent); transition: width .25s; }
-        .nav-links a:hover { color: var(--text); }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-cta { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: .45rem 1.1rem; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; transition: background .2s, color .2s; cursor: pointer; white-space: nowrap; }
-        .nav-cta:hover { background: var(--accent); color: var(--bg); }
-        .nav-burger { display: none; background: none; border: none; color: var(--text); font-size: 1.2rem; }
-        @media (max-width: 900px) {
-          .nav-links, .nav-cta { display: none; }
-          .nav-burger { display: block; }
-          .nav-mobile { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; z-index: 99; }
-          .nav-mobile a { font-size: 1.5rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text2); cursor: pointer; }
-        }
-      `}</style>
-      <nav className={`nav${scrolled ? " scrolled" : ""}`}>
-        <div className="nav-logo" onClick={() => navigate("/")}>Thomas Labetouille</div>
-        <div className="nav-right">
-          <ul className="nav-links">
-            {links.map((l) => (
-              <li key={l.href}><a href={l.href} onClick={(e) => handleNav(e, l.href)}>{l.label}</a></li>
-            ))}
-          </ul>
-          <button className="nav-cta" onClick={(e) => handleNav(e, "#contact")}>{t("nav_cta")}</button>
-          <LangSwitcher />
-          <button className="nav-burger" onClick={() => setOpen(!open)} aria-label="menu">{open ? "✕" : "☰"}</button>
+    <header className="nav">
+      <div className="wrap">
+        <Link className="brand" to="/" onClick={() => setOpen(false)}>Thomas Labetouille</Link>
+        <nav className="nav-links" aria-label={s.nav.menu}>
+          {items.map((i) => <Link key={i.to} to={i.to}>{i.label}</Link>)}
+        </nav>
+        <div className="lang" role="group" aria-label={s.nav.langLabel}>
+          <button type="button" lang="fr" aria-pressed={lang === "fr"} onClick={() => setLang("fr")}>
+            <span className="sr-only">Français</span><span aria-hidden="true" style={{ color: "inherit" }}>FR</span>
+          </button>
+          <span aria-hidden="true">·</span>
+          <button type="button" lang="en" aria-pressed={lang === "en"} onClick={() => setLang("en")}>
+            <span className="sr-only">English</span><span aria-hidden="true" style={{ color: "inherit" }}>EN</span>
+          </button>
         </div>
+        <a className="btn sm primary nav-cv" href={s.cvFile} target="_blank" rel="noreferrer">
+          <IconDownload />{s.nav.cv}
+        </a>
+        <button
+          type="button"
+          className="burger"
+          aria-expanded={open}
+          aria-controls="menu-mobile"
+          aria-label={open ? s.nav.close : s.nav.menu}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? <IconClose /> : <IconMenu />}
+        </button>
+      </div>
+      <nav id="menu-mobile" className="nav-panel" hidden={!open} aria-label={s.nav.menu}>
+        {items.map((i) => <Link key={i.to} to={i.to} onClick={() => setOpen(false)}>{i.label}</Link>)}
+        <a href={s.cvFile} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>{s.nav.cv}</a>
       </nav>
-      {open && (
-        <div className="nav-mobile">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} onClick={(e) => handleNav(e, l.href)}>{l.label}</a>
-          ))}
-          <LangSwitcher />
-        </div>
-      )}
-    </>
+    </header>
   );
 }
