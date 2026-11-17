@@ -32,7 +32,13 @@ export default function Home() {
   // Arrivée sur /#projets depuis une page de détail : on défile jusqu'à la section.
   useEffect(() => {
     if (!hash) return;
-    const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+    let target;
+    try {
+      target = decodeURIComponent(hash.slice(1));
+    } catch {
+      return; // ancre mal encodée (ex. "#%") : on reste en haut de la page
+    }
+    const el = document.getElementById(target);
     if (el) el.scrollIntoView();
   }, [hash]);
 

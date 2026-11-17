@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { projects } from "../data/portfolio";
 import { projectsData } from "../data/projectsData";
@@ -20,7 +20,12 @@ export default function ProjectDetail() {
   // L'image agrandie est liée au projet affiché : changer de projet la referme.
   const [zoomed, setZoomed] = useState(null);
   const lightbox = zoomed?.id === id ? zoomed : null;
-  const setLightbox = (img) => setZoomed(img ? { ...img, id } : null);
+  const openerRef = useRef(null);
+  const closeRef = useRef(null);
+  const setLightbox = (img) => {
+    if (img) openerRef.current = document.activeElement;
+    setZoomed(img ? { ...img, id } : null);
+  };
 
   const project = projects.find((p) => p.id === id);
   const text = projectsData[lang]?.[id] ?? projectsData.fr[id];
@@ -43,9 +48,23 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     if (!lightbox) return undefined;
-    const onKey = (e) => e.key === "Escape" && setZoomed(null);
+    const onKey = (e) => {
+      if (e.key === "Escape") setZoomed(null);
+      // Seul le bouton Fermer est focalisable : Tab ne doit pas sortir de la fenêtre.
+      if (e.key === "Tab") {
+        e.preventDefault();
+        closeRef.current?.focus();
+      }
+    };
+    const opener = openerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+      if (opener?.isConnected) opener.focus();
+    };
   }, [lightbox]);
 
   if (!project) {
@@ -183,7 +202,7 @@ export default function ProjectDetail() {
       {lightbox && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label={lightbox.alt} onClick={() => setLightbox(null)}>
           <img src={lightbox.src} alt={lightbox.alt} onClick={(e) => e.stopPropagation()} />
-          <button type="button" autoFocus aria-label={s.detail.close} onClick={() => setLightbox(null)}><IconClose /></button>
+          <button type="button" ref={closeRef} autoFocus aria-label={s.detail.close} onClick={() => setLightbox(null)}><IconClose /></button>
         </div>
       )}
     </main>

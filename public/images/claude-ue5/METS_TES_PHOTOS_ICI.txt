@@ -1,6 +1,0 @@
-Place ici 4 screenshots nommés exactement :
-
-1. panel_overview.png      — Panneau Claude AI ouvert dans UE5 (vue éditeur complète)
-2. level_design_result.png — Viewport UE5 après dress_level_zone (props + lumières)
-3. python_execution.png    — Gros plan sur le chat (commande + code Python + "Résultat : OK")
-4. blueprint_editing.png   — Un graphe Blueprint ouvert avec nodes connectés

@@ -204,6 +204,10 @@ const fr = {
     zoom: "Agrandir l'image",
     close: "Fermer",
     loading: "Chargement…",
+    pageNotFound: "Cette page n'existe pas.",
+    backHome: "Retour à l'accueil",
+    error: "Cette page n'a pas pu s'afficher.",
+    reload: "Recharger la page",
   },
   gallery: {
     gallery_drone_outage: "Perte du GNSS pendant 60 s : où le drone croit-il être ?",
@@ -410,6 +414,10 @@ const en = {
     zoom: "Enlarge image",
     close: "Close",
     loading: "Loading…",
+    pageNotFound: "This page doesn't exist.",
+    backHome: "Back to home",
+    error: "This page couldn't be displayed.",
+    reload: "Reload the page",
   },
   gallery: {
     gallery_drone_outage: "60 s GNSS outage: where does the drone think it is?",
